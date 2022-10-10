@@ -15,14 +15,19 @@ class DataController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'value' => 'required',
+            'mac' => 'required',
+            'uptime' => 'required'
+        ]);
         try {
-            //Примерный псевдокод
+
             $sensor = Sensor::where(['mac' => $request->mac])->first();
 
             $data = new Data();
             $data->value = $request->value;
-            
-            //Примерный псевдокод
+
+
             $data->sensor_id = $sensor->id;
             $sensor->uptime = $request->uptime;
 

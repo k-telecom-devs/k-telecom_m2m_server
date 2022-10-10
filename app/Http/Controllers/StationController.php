@@ -16,6 +16,7 @@ class StationController extends Controller
     {
         try {
             $station = new Station();
+            $station->user_id = $request->user_id;
 
             if ($station->save()) {
                 return response()->json(['message' => 'Station created successfully.']);

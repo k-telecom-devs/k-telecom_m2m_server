@@ -14,6 +14,11 @@ class SensorController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'mac' => 'required',
+            'station_id' => 'required'
+        ]);
+
         try {
 
             $sensor = new Sensor();

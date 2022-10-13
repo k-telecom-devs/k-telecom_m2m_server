@@ -3,10 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Sensor extends Model
 {
     protected $fillable = [
-        'mac', 'uptime', 'station_id'
+        'mac', 'uptime', 'charge', 'station_id'
     ];
+
+    public function datas(): HasMany
+    {
+        return $this->hasMany(Data::class, 'sensor_id', 'id')->orderByDesc('id');
+    }
 }

@@ -10,26 +10,23 @@ class DataController extends Controller
 {
     public function index()
     {
-        return Data::all();
+        $user = auth()->user();
+        return Data::all()->where('user_id', $user['id']);
     }
 
-    public function store(Request $request)
+    public function ServerGetData(Request $request)
     {
-        $this->validate($request, [
-            'value' => 'required',
-            'mac' => 'required',
-            'uptime' => 'required'
-        ]);
         try {
-
+            //Примерный псевдокод
             $sensor = Sensor::where(['mac' => $request->mac])->first();
 
             $data = new Data();
             $data->value = $request->value;
-
-
+            
+            //Примерный псевдокод
             $data->sensor_id = $sensor->id;
             $sensor->uptime = $request->uptime;
+            $sensor->charge = $request->charge;
 
             if ($data->save() && $sensor->save()) {
                 return response()->json(['message' => 'Data created successfully, sensor updated']);

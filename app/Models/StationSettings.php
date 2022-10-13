@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Station extends Model
+class StationSettings extends Model
 {
+    protected $table = "station_settings";
     protected $fillable = [
-        'user_id'
+        'name', 'station_id'
     ];
 
 

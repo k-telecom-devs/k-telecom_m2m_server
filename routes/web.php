@@ -22,20 +22,22 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/register', 'AuthController@register');
     $router->post('/login', 'AuthController@login');
 
-    $router->get('/data', 'DataController@index');
-    $router->post('/data', 'DataController@store');
-
-    $router->get('/sensor', 'SensorController@index');
-    $router->post('/sensor', 'SensorController@store');
-
-    $router->get('/station', 'StationController@index');
-    $router->post('/station', 'StationController@store');
-
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('/logout', 'AuthController@logout');
-        $router->get('/posts', 'PostController@index');
-        $router->post('/posts', 'PostController@store');
-        $router->put('/posts/{id}', 'PostController@update');
-        $router->delete('/posts/{id}', 'PostController@destroy');
+
+        $router->get('/data', 'DataController@index');
+        $router->post('/data', 'DataController@ServerGetData');
+    
+        $router->get('/sensor', 'SensorController@UserGetData');
+        $router->post('/sensor', 'SensorController@create');
+    
+        $router->get('/station', 'StationController@index');
+        $router->post('/station', 'StationController@create');
+
+        $router->get('/station-settings', 'StationSettingsController@index');
+        $router->post('/station-settings', 'StationSettingsController@edit');
+
+        $router->get('/sensor-settings', 'SensorSettingsController@index');
+        $router->post('/sensor-settings', 'SensorSettingsController@edit');
     });
 });

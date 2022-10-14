@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Sensor;
 use App\Models\StationSettings;
+use App\Models\Station;
 use Illuminate\Http\Request;
 
 class StationSettingsController extends Controller
 {
     public function index()
     {
-        return response()->json(['message' => 'Here will be smt']);
+        $station = Station::where('mac', $request->mac)->get()->first();
+        
+        return SensorsSettings::where('sensor_id', $sensor['id'])->get()->values();
     }
 
     public function edit(Request $request)

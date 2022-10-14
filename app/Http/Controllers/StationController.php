@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Station;
-use App\Models\StationSettings;
+use App\Models\StationsSettings;
 use Illuminate\Http\Request;
 
 class StationController extends Controller
@@ -24,7 +24,7 @@ class StationController extends Controller
             $station->user_id = $user['id'];
 
             if ($station->save()){            
-                $station_settings = new StationSettings();
+                $station_settings = new StationsSettings();
                 $station_settings-> name = $request->name;
                 $station_settings -> station_id = $station -> id;
             }

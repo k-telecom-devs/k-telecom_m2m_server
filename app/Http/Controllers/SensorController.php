@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Sensor;
 use App\Models\Station;
-use App\Models\SensorSettings;
+use App\Models\SensorsSettings;
 use Illuminate\Http\Request;
 
 class SensorController extends Controller
 {
-    public function UserGetData()
+    public function index()
     {
         $user = auth()->user();
 
@@ -25,7 +25,7 @@ class SensorController extends Controller
             $sensor->mac = $request->mac;
             $sensor->station_id = $request->station_id;
             if ($sensor->save()){
-                $sensor_settings = new SensorSettings();
+                $sensor_settings = new SensorsSettings();
                 $sensor_settings->sensor_id = $sensor->id;
         }
             if ($sensor->save() && $sensor_settings->save()) {

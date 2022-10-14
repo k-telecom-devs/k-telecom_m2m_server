@@ -19,7 +19,7 @@ class CreateSensorsTable extends Migration
 
             $table->string('mac');
             $table->unsignedBigInteger('uptime')->nullable();
-            $table->unsignedBigInteger('charge')->nullable();
+            $table->tinyInteger('charge')->nullable();
 
             $table->unsignedBigInteger('station_id');
             $table->foreign('station_id')->references('id')->on('stations');

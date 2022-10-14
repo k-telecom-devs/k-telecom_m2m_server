@@ -28,6 +28,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/sensor', 'SensorController@UserGetData');
         $router->post('/sensor', 'SensorController@create');
 
+
+
+	$router->get('/sensor-settings', 'SensorSettingsController@index');
+
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('/logout', 'AuthController@logout');
 
@@ -39,7 +43,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/station-settings', 'StationSettingsController@index');
         $router->post('/station-settings', 'StationSettingsController@edit');
 
-        $router->get('/sensor-settings', 'SensorSettingsController@index');
+        
         $router->post('/sensor-settings', 'SensorSettingsController@edit');
     });
 });

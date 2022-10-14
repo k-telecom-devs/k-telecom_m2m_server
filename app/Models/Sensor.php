@@ -10,7 +10,7 @@ class Sensor extends Model
         'mac', 'uptime', 'charge', 'station_id'
     ];
 
-    public function datas(): HasMany
+    public function data(): HasMany
     {
         return $this->hasMany(Data::class, 'sensor_id', 'id')->orderByDesc('id');
     }

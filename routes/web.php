@@ -27,17 +27,17 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->get('/data', 'DataController@index');
         $router->post('/data', 'DataController@ServerGetData');
-    
+
         $router->get('/sensor', 'SensorController@index');
         $router->post('/sensor', 'SensorController@create');
-    
+
         $router->get('/station', 'StationController@index');
         $router->post('/station', 'StationController@create');
 
-        $router->get('/stations-settings', 'StationsSettingsController@index');
-        $router->post('/stations-settings', 'StationsSettingsController@edit');
+        $router->get('/stations-settings', 'StationSettingsController@index');
+        $router->post('/stations-settings', 'StationSettingsController@edit');
 
-        $router->get('/sensors-settings', 'SensorsSettingsController@index');
-        $router->post('/sensors-settings', 'SensorsSettingsController@edit');
+        $router->get('/sensors-settings', 'SensorSettingsController@index');
+        $router->post('/sensors-settings', 'SensorSettingsController@edit');
     });
 });

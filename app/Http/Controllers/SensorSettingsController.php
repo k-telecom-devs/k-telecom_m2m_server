@@ -7,7 +7,7 @@ use App\Models\SensorSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class SensorsSettingsController extends Controller
+class SensorSettingsController extends Controller
 {
     public function index(Request $request)
     {

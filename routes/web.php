@@ -34,10 +34,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/station', 'StationController@index');
         $router->post('/station', 'StationController@create');
 
-        $router->get('/stations-settings', 'StationSettingsController@index');
-        $router->post('/stations-settings', 'StationSettingsController@edit');
+        $router->get('/station-settings', 'StationSettingsController@index');
+        $router->post('/station-settings', 'StationSettingsController@edit');
 
-        $router->get('/sensors-settings', 'SensorSettingsController@index');
-        $router->post('/sensors-settings', 'SensorSettingsController@edit');
+        $router->get('/sensor-settings', 'SensorSettingsController@index');
+        $router->post('/sensor-settings', 'SensorSettingsController@edit');
     });
 });

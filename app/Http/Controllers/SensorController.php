@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Sensor;
 use App\Models\Station;
-use App\Models\SensorsSettings;
+use App\Models\SensorSettings;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SensorController extends Controller
@@ -18,14 +19,14 @@ class SensorController extends Controller
         return Sensor::where('station_id', $station['id'])->get()->values();
     }
 
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         try {
             $sensor = new Sensor();
             $sensor->mac = $request->mac;
             $sensor->station_id = $request->station_id;
             if ($sensor->save()){
-                $sensor_settings = new SensorsSettings();
+                $sensor_settings = new SensorSettings();
                 $sensor_settings->sensor_id = $sensor->id;
         }
             if ($sensor->save() && $sensor_settings->save()) {

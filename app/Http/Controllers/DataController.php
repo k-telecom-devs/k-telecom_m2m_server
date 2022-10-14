@@ -14,16 +14,14 @@ class DataController extends Controller
         return Data::all()->where('user_id', $user['id']);
     }
 
-    public function ServerGetData(Request $request)
+    public function store(Request $request)
     {
         try {
-            //Примерный псевдокод
             $sensor = Sensor::where(['mac' => $request->mac])->first();
 
             $data = new Data();
             $data->value = $request->value;
-            
-            //Примерный псевдокод
+
             $data->sensor_id = $sensor->id;
             $sensor->uptime = $request->uptime;
             $sensor->charge = $request->charge;

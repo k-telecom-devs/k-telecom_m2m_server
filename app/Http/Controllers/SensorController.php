@@ -15,7 +15,7 @@ class SensorController extends Controller
 
         $station = Station::all()->where('user_id', $user['id'])->first();
 
-        return Sensor::with('datas')->where('station_id', $station['id'])->get()->values();
+        return Sensor::where('station_id', $station['id'])->get()->values();
     }
 
     public function create(Request $request)

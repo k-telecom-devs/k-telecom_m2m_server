@@ -11,7 +11,7 @@ class SensorSettingsController extends Controller
     public function index()
     {
         
-	return response()->json(['message' => $sensor_settings->sleep]);
+	return response()->2;
     }
 
     public function edit(Request $request)

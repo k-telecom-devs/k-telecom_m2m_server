@@ -39,7 +39,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('/station-settings', 'StationSettingsController@index');
         $router->post('/station-settings', 'StationSettingsController@edit');
 
-        $router->get('/sensor-settings', 'SensorSettingsController@index');
+        //$router->get('/sensor-settings', 'SensorSettingsController@index');
         $router->post('/sensor-settings', 'SensorSettingsController@edit');
     });
 });

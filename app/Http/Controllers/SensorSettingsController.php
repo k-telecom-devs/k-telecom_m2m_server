@@ -10,7 +10,7 @@ class SensorSettingsController extends Controller
 {
     public function index()
     {
-        return response()->json(['message' => 'Here will be smt']);
+        return $sensor_settings->sleep;
     }
 
     public function edit(Request $request)

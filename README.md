@@ -5,7 +5,7 @@
 1. Clone this repo
 
 ```
-git clone https://github.com/samironbarai/lumen-rest-api-jwt-auth.git
+git clone https://github.com/k-telecom-devs/k-telecom_m2m_server.git
 ```
 
 2. Install composer packages

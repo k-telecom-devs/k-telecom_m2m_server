@@ -10,7 +10,8 @@ class SensorSettingsController extends Controller
 {
     public function index()
     {
-        return $sensor_settings->sleep;
+        
+	return response()->$sensor_settings->sleep;
     }
 
     public function edit(Request $request)

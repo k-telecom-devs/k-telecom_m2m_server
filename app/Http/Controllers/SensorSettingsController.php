@@ -27,6 +27,9 @@ class SensorSettingsController extends Controller
             if ($sensors_settings->save()) {
                 return response()->json(['message' => 'Data created successfully, sensor updated']);
             }
+            else {
+                return response()->json(['message' => 'Something gone wrong']);
+            }
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }

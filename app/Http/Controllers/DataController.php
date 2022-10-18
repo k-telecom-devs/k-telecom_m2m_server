@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Data;
 use App\Models\Sensor;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DataController extends Controller
@@ -14,7 +15,7 @@ class DataController extends Controller
         return Data::all()->where('user_id', $user['id']);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         try {
             $sensor = Sensor::where(['mac' => $request->mac])->first();
@@ -28,6 +29,9 @@ class DataController extends Controller
 
             if ($data->save() && $sensor->save()) {
                 return response()->json(['message' => 'Data created successfully, sensor updated']);
+            }
+            else {
+                return response()->json(['message' => 'Something gone wrong']);
             }
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);

@@ -10,4 +10,6 @@ class SensorSettings extends Model
     protected $fillable = [
         'name','sleep', 'sensor_id'
     ];
+
+
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSensorSettingsTable extends Migration
+class CreateVersionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateSensorSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sensor_settings', function (Blueprint $table) {
+        Schema::create('versions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
 
-            $table->string('name')->nullable();
-            $table->unsignedBigInteger('sleep')->nullable();
-
-            $table->unsignedBigInteger('sensor_id');
-            $table->foreign('sensor_id')->references('id')->on('sensors');
+            $table->string('file_url');
+            $table->string('version');
+            $table->text('description');
         });
     }
 
@@ -32,6 +30,6 @@ class CreateSensorSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sensors_settings');
+        Schema::dropIfExists('versions');
     }
 }

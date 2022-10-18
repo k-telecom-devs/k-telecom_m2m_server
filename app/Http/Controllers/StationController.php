@@ -26,7 +26,7 @@ class StationController extends Controller
 
             $station->user_id = $user['id'];
 
-            if ($station->save()){
+            if ($station->save()) {
                 $station_settings->name = $request->name;
                 $station_settings->station_id = $station->id;
             }

@@ -18,7 +18,7 @@ class CreateVersionsTable extends Migration
             $table->timestamps();
 
             $table->string('file_url');
-            $table->string('version');
+            $table->string('version')->unique();
             $table->text('description');
         });
     }

@@ -17,8 +17,8 @@ class CreateSensorSettingsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('name')->nullable();
-            $table->unsignedBigInteger('sleep')->nullable();
+            $table->string('name')->default('Датчик');
+            $table->unsignedBigInteger('sleep')->default(30);
 
             $table->unsignedBigInteger('version_id');
             $table->foreign('version_id')->references('id')->on('versions');

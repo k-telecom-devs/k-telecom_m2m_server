@@ -11,9 +11,12 @@ class SensorSettingsController extends Controller
 {
     public function index(Request $request)
     {
-        $sensor = Sensor::where('mac', $request->mac)->get()->first();
+        $sensor = Sensor::where('mac', $request->mac)
+            ->get()->first();
 
-        return SensorSettings::where('sensor_id', $sensor['id'])->get()->values();
+        return SensorSettings::with('version')
+            ->where('sensor_id', $sensor['id'])
+            ->get()->values();
     }
 
     public function edit(Request $request): JsonResponse
@@ -23,15 +26,19 @@ class SensorSettingsController extends Controller
 
             $sensors_settings->name = $request->name;
             $sensors_settings->sleep = $request->sleep;
+            $sensors_settings->version_id = $request->version_id;
 
             if ($sensors_settings->save()) {
-                return response()->json(['message' => 'Data created successfully, sensor updated']);
+                return response()
+                    ->json(['message' => 'Data created successfully, sensor updated']);
             }
             else {
-                return response()->json(['message' => 'Something gone wrong']);
+                return response()
+                    ->json(['message' => 'Something gone wrong']);
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()]);
+            return response()
+                ->json(['message' => $e->getMessage()]);
         }
     }
 }

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Version extends Model
 {
     protected $fillable = [
-        'user_id'
+        'file_url', 'version', 'description'
     ];
-
-    //TODO: допилить версию (связи с сеттингсами)
 }

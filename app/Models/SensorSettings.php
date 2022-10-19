@@ -14,6 +14,6 @@ class SensorSettings extends Model
 
     public function version(): HasOne
     {
-        return $this->hasOne(Version::class);
+        return $this->HasOne(Version::class, 'id', 'version_id');
     }
 }

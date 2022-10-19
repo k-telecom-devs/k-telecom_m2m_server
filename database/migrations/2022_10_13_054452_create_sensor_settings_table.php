@@ -20,6 +20,9 @@ class CreateSensorSettingsTable extends Migration
             $table->string('name')->nullable();
             $table->unsignedBigInteger('sleep')->nullable();
 
+            $table->unsignedBigInteger('version_id');
+            $table->foreign('version_id')->references('id')->on('versions');
+
             $table->unsignedBigInteger('sensor_id');
             $table->foreign('sensor_id')->references('id')->on('sensors');
         });

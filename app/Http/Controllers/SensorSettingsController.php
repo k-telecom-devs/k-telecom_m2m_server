@@ -14,8 +14,7 @@ class SensorSettingsController extends Controller
         $sensor = Sensor::where('mac', $request->mac)
             ->get()->first();
 
-        return SensorSettings::with('version')
-            ->where('sensor_id', $sensor['id'])
+        return SensorSettings::with('version')->where('sensor_id', $sensor['id'])
             ->get()->values();
     }
 

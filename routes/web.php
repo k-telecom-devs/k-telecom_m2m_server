@@ -19,6 +19,7 @@ $router->get('/', function () use ($router) {
 
 
 $router->group(['prefix' => 'api'], function () use ($router) {
+
     $router->post('/register', 'AuthController@register');
     $router->post('/login', 'AuthController@login');
 
@@ -40,7 +41,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/station-settings', 'StationSettingsController@edit');
 
         $router->post('/version', 'VersionController@create');
-        
+
         $router->post('/sensor-settings', 'SensorSettingsController@edit');
     });
 });

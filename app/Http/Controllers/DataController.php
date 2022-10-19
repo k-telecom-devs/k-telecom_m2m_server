@@ -17,7 +17,15 @@ class DataController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $this->validate($request, [
+            'mac' => 'required',
+            'value' => 'required',
+            'uptime' => 'required',
+            'charge' => 'required',
+        ]);
+
         try {
+
             $sensor = Sensor::where(['mac' => $request->mac])->first();
 
             $data = new Data();

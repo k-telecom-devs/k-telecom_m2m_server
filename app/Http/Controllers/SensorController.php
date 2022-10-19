@@ -14,16 +14,22 @@ class SensorController extends Controller
     {
         $user = auth()->user();
 
-        $station = Station::all()->where('user_id', $user['id'])->first();
+        $stations = Station::where('user_id', $user['id'])->pluck('id')->all();
 
-        return Sensor::with('version')
-            ->with('data')
-            ->where('station_id', $station['id'])
+        return Sensor::with('data')
+            ->whereIn('station_id', $stations)
             ->get()->values();
     }
 
     public function create(Request $request): JsonResponse
     {
+        $this->validate($request, [
+            'mac' => 'required',
+            'station_id' => 'required',
+            'name' => 'required',
+            'version_id' => 'required',
+        ]);
+
         try
         {
             $sensor = new Sensor();

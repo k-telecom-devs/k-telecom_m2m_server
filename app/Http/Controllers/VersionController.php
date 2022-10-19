@@ -13,6 +13,12 @@ class VersionController extends Controller
 {
     public function create(Request $request): JsonResponse
     {
+        $this->validate($request, [
+            'file_url' => 'required',
+            'description' => 'required',
+            'version' => 'required',
+        ]);
+
         $version = new Version();
 
         $version->file_url = $request->file_url;

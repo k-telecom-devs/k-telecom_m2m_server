@@ -20,6 +20,13 @@ class SensorSettingsController extends Controller
 
     public function edit(Request $request): JsonResponse
     {
+        $this->validate($request, [
+            'sensor_id' => 'required',
+            'name' => 'required',
+            'sleep' => 'required',
+            'version_id' => 'required',
+        ]);
+
         try {
             $sensors_settings = SensorSettings::where(['sensor_id' => $request->sensor_id])->first();
 

@@ -2,6 +2,7 @@
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class CorsMiddleware
 {
@@ -12,7 +13,7 @@ class CorsMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next): mixed
+    public function handle(Request $request, Closure $next)
     {
         $headers = [
             'Access-Control-Allow-Origin'      => '*',

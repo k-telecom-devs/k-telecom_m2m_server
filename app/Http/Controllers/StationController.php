@@ -18,6 +18,10 @@ class StationController extends Controller
 
     public function create(Request $request): JsonResponse
     {
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
         try {
             $user = auth()->user();
 

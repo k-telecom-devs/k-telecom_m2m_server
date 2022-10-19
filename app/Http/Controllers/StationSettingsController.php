@@ -16,6 +16,11 @@ class StationSettingsController extends Controller
 
     public function edit(Request $request): JsonResponse
     {
+        $this->validate($request, [
+            'station_id' => 'required',
+            'name' => 'required',
+        ]);
+
         try {
             $station_settings = StationSettings::where(['station_id' => $request->station_id])->first();
             $station_settings->name = $request->name;

@@ -6,9 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Station extends Model
 {
-    protected $fillable = [
-        'file_url', 'version', 'description'
-    ];
-
-
+    protected $fillable = [];
 }

@@ -11,7 +11,7 @@ class StationSettingsController extends Controller
 {
     public function index(Request $request)
     {
-        return StationSettings::where('station_id', $request->id)->get()->values();
+        return StationSettings::where('station_id', $request->station_id)->get()->values();
     }
 
     public function edit(Request $request): JsonResponse

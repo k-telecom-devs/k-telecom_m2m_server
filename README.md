@@ -236,21 +236,29 @@ GET /api/station
 [
     {
         "id": 1,
-        "created_at": "2022-10-19T06:09:13.000000Z",
-        "updated_at": "2022-10-19T06:09:13.000000Z",
-        "user_id": 2
+        "created_at": "2022-10-19T05:16:13.000000Z",
+        "updated_at": "2022-10-19T05:16:13.000000Z",
+        "user_id": 1,
+        "settings": {
+            "id": 1,
+            "created_at": "2022-10-19T05:16:13.000000Z",
+            "updated_at": "2022-10-19T05:16:13.000000Z",
+            "name": "Zaloopas",
+            "station_id": 1
+        }
     },
     {
         "id": 2,
-        "created_at": "2022-10-19T06:09:19.000000Z",
-        "updated_at": "2022-10-19T06:09:19.000000Z",
-        "user_id": 2
-    },
-    {
-        "id": 5,
-        "created_at": "2022-10-19T09:30:15.000000Z",
-        "updated_at": "2022-10-19T09:30:15.000000Z",
-        "user_id": 2
+        "created_at": "2022-10-23T06:50:22.000000Z",
+        "updated_at": "2022-10-23T06:50:22.000000Z",
+        "user_id": 1,
+        "settings": {
+            "id": 2,
+            "created_at": "2022-10-23T06:50:22.000000Z",
+            "updated_at": "2022-10-23T06:50:22.000000Z",
+            "name": "Ebasosina",
+            "station_id": 2
+        }
     }
 ]
 ```

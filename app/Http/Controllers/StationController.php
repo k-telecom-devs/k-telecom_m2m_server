@@ -13,7 +13,7 @@ class StationController extends Controller
     {
         $user = auth()->user();
 
-        return Station::where('user_id', $user['id'])->get()->values();
+        return Station::with('settings')->where('user_id', $user['id'])->get()->values();
     }
 
     public function create(Request $request): JsonResponse

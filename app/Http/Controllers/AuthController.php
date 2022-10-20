@@ -69,8 +69,22 @@ class AuthController extends Controller
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         return $this->respondWithToken($token);
+    }
+
+    public function profile_change(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+        $user->phone_number = $request->phone_number;
+        $user->notifications = $request->notifications;
+        $user->auto_update = $request->auto_update;
+        $user->auto_pay = $request->auto_pay;
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->password = app('hash')->make($request->password);
+        if ($user->save()){
+            return response()->json(['message' => 'Data updated successfully']);
+    }
     }
 
     /**

@@ -28,6 +28,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('/logout', 'AuthController@logout');
+        $router->post('/profile-change', 'AuthController@profile_change');
 
         $router->get('/data', 'DataController@index');
 
@@ -43,5 +44,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/version', 'VersionController@create');
 
         $router->post('/sensor-settings', 'SensorSettingsController@edit');
+        
     });
 });

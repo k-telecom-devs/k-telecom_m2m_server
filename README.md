@@ -77,6 +77,20 @@ POST /api/login
 ```
 <br>
 
+## **Обновить токен**
+
+Обновляет токен авторизованного пользователя
+```
+POST /api/refresh 
+```
+**Возвращает**
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6NTAwMFwvYXBpXC9yZWdpc3RlciIsImlhdCI6MTY2NjE1OTcxOCwiZXhwIjoxNjY2MjA2NTE4LCJuYmYiOjE2NjYxNTk3MTgsImp0aSI6ImRyT09OS2RJTkRZSUQyZnEiLCJzdWIiOjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bWdN2EsvLAdxMaYoZTNAO2jpjpUV1ryNLpR90zHtTIw"
+}
+```
+<br>
+
 ## **Отправить данные датчика.**
 Добавляет данные value и mac на момент отправки запроса и обновляет данные uptime и charge у датчика с соответсвующим mac.
 ```

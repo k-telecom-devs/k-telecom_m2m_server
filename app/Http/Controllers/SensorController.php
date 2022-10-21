@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sensor;
 use App\Models\Station;
+use App\Models\Version;
 use App\Models\SensorSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -33,21 +34,25 @@ class SensorController extends Controller
         try
         {
             $sensor = new Sensor();
-
+            $version = Version::find($request->version_id);
+            if(! $version){
+                return response()->json(['message' => 'No version with this id']);
+            }
             $sensor->mac = $request->mac;
             $sensor->station_id = $request->station_id;
-
             if ($sensor->save())
             {
                 $sensor_settings = new SensorSettings();
                 $sensor_settings->sensor_id = $sensor->id;
                 $sensor_settings->name = $request->name;
-                $sensor_settings->version_id = $request->version_id;
+                /*if($version->sensor_type == $request->sensor_type){
+                    $sensor_settings->version_id = $request->version_id;
+                }*/
             }
 
             if ($sensor_settings->save())
             {
-                return response()->json(['message' => 'Sensor created successfully.']);
+                return response()->json(['message' => 'Sensor created successfully.'.$version]);
             }
             else
             {

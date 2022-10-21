@@ -87,6 +87,12 @@ class AuthController extends Controller
     }
     }
 
+    public function get_profile(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+            return response()->json(['message' => $user]);
+    }
+
     /**
      * Get the token array structure.
      *

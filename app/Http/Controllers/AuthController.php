@@ -74,23 +74,25 @@ class AuthController extends Controller
 
     public function profile_change(Request $request): JsonResponse
     {
-        $user = auth()->user();
+        $u = auth()->user();
+
+        $user = User::find($u['id']);
+
         $user->phone_number = $request->phone_number;
         $user->notifications = $request->notifications;
         $user->auto_update = $request->auto_update;
         $user->auto_pay = $request->auto_pay;
         $user->email = $request->email;
         $user->name = $request->name;
-        $user->password = app('hash')->make($request->password);
+
         if ($user->save()){
             return response()->json(['message' => 'Data updated successfully']);
     }
     }
 
-    public function get_profile(Request $request): JsonResponse
+    public function get_profile(): JsonResponse
     {
-        $user = auth()->user();
-            return response()->json(['message' => $user]);
+        return response()->json(['message' => auth()->user()]);
     }
 
     /**

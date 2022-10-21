@@ -32,6 +32,8 @@ class SensorSettingsController extends Controller
 
             $sensors_settings->name = $request->name;
             $sensors_settings->sleep = $request->sleep;
+            $sensors_settings->notification_start_at = $request->notification_start_at;
+            $sensors_settings->notification_end_at = $request->notification_end_at;
             $sensors_settings->version_id = $request->version_id;
 
             if ($sensors_settings->save()) {

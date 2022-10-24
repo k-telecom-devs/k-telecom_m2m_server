@@ -29,30 +29,46 @@ class SensorController extends Controller
             'station_id' => 'required',
             'name' => 'required',
             'version_id' => 'required',
+            'device_type_id' => 'required',
         ]);
 
         try
         {
-            $sensor = new Sensor();
-            $version = Version::find($request->version_id);
+            $sensor = new Sensor();            
+            $sensor_settings = new SensorSettings();
+            $version = Version::where('id', $request->version_id);
+            
             if(! $version){
                 return response()->json(['message' => 'No version with this id']);
             }
+
+           /*if($version->device_type_id != $request->sensor_type){
+                $sensor_settings->version_id = $request->version_id;
+            }
+            else{
+                return response()->json(['message' => 'Wrong sensor type. this sensor only for '.$version->sensor_type]);
+            }*/
+            
             $sensor->mac = $request->mac;
             $sensor->station_id = $request->station_id;
-            if ($sensor->save())
-            {
-                $sensor_settings = new SensorSettings();
-                $sensor_settings->sensor_id = $sensor->id;
-                $sensor_settings->name = $request->name;
-                /*if($version->sensor_type == $request->sensor_type){
-                    $sensor_settings->version_id = $request->version_id;
-                }*/
-            }
+            $sensor->device_type_id = $request->device_type_id;
 
-            if ($sensor_settings->save())
+            if ($sensor->save()){ 
+                $sensor_settings->name = $request->name;
+                $sensor_settings->sleep = $request->sleep;
+                $sensor_settings->notification_start_at = $request->notification_start_at;
+                $sensor_settings->notification_end_at = $request->notification_end_at;
+                $sensor_settings->version_id = $request->version_id;
+                $sensor_settings->sensor_id = $sensor->id;
+                $sensor_settings->station_id = $request->station_id;
+
+        }
+        else{
+            return response()->json(['message' => 'Something gone wrong.']);
+        }
+            if ($sensor_settings->save() && $sensor->save())
             {
-                return response()->json(['message' => 'Sensor created successfully.'.$version]);
+                return response()->json(['message' => 'Sensor created successfully.']);
             }
             else
             {

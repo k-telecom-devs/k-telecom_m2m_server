@@ -20,6 +20,11 @@ class CreateVersionsTable extends Migration
             $table->string('file_url');
             $table->string('version')->unique();
             $table->text('description');
+
+            $table->unsignedBigInteger('device_type_id')->nullable();
+            $table->foreign('device_type_id')->references('id')->on('device_type');
+
+
         });
     }
 

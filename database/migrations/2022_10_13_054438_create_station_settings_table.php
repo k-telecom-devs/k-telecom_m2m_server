@@ -17,10 +17,13 @@ class CreateStationSettingsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('name');
+            $table->string('name')->default('Станция');
 
             $table->unsignedBigInteger('station_id');
             $table->foreign('station_id')->references('id')->on('stations');
+
+            $table->unsignedBigInteger('version_id');
+            $table->foreign('version_id')->references('id')->on('versions');
 
         });
     }

@@ -22,9 +22,9 @@ class VersionController extends Controller
         $version = new Version();
 
         $version->file_url = $request->file_url;
+        $version->device_type_id = $request->device_type_id;
         $version->description = $request->description;
         $version->version = $request->version;
-        $version->sensor_type = $request->sensor_type;
 
         if($version->save())
             return response()->json(['message' => 'Version created successfully.']);

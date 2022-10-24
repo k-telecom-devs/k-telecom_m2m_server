@@ -28,15 +28,16 @@ class SensorSettingsController extends Controller
         ]);
 
         try {
-            $sensors_settings = SensorSettings::where(['sensor_id' => $request->sensor_id])->first();
+            $sensor_settings = SensorSettings::where(['sensor_id' => $request->sensor_id])->first();
 
-            $sensors_settings->name = $request->name;
-            $sensors_settings->sleep = $request->sleep;
-            $sensors_settings->notification_start_at = $request->notification_start_at;
-            $sensors_settings->notification_end_at = $request->notification_end_at;
-            $sensors_settings->version_id = $request->version_id;
+            $sensor_settings->name = $request->name;
+            $sensor_settings->sleep = $request->sleep;
+            $sensor_settings->notification_start_at = $request->notification_start_at;
+            $sensor_settings->notification_end_at = $request->notification_end_at;
+            $sensor_settings->version_id = $request->version_id;
+            $sensor_settings->station_id = $request->station_id;
 
-            if ($sensors_settings->save()) {
+            if ($sensor_settings->save()) {
                 return response()
                     ->json(['message' => 'Data created successfully, sensor updated']);
             }

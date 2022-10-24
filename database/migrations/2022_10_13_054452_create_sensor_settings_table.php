@@ -19,12 +19,18 @@ class CreateSensorSettingsTable extends Migration
 
             $table->string('name')->default('Датчик');
             $table->unsignedBigInteger('sleep')->default(30);
+            $table->time('notification_start_at')->default('00:00:00');
+            $table->time('notification_end_at')->default('00:00:00');
 
             $table->unsignedBigInteger('version_id');
             $table->foreign('version_id')->references('id')->on('versions');
 
             $table->unsignedBigInteger('sensor_id');
             $table->foreign('sensor_id')->references('id')->on('sensors');
+
+            $table->unsignedBigInteger('station_id');
+            $table->foreign('station_id')->references('id')->on('stations');
+
         });
     }
 

@@ -23,6 +23,9 @@ class CreateSensorsTable extends Migration
 
             $table->unsignedBigInteger('station_id');
             $table->foreign('station_id')->references('id')->on('stations');
+
+            $table->unsignedBigInteger('device_type_id');
+            $table->foreign('device_type_id')->references('id')->on('device_type');
         });
     }
 

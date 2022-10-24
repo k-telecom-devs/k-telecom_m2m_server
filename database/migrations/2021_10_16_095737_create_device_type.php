@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAddTimeForNotification extends Migration
+class CreateDeviceType extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateAddTimeForNotification extends Migration
      */
     public function up()
     {
-        Schema::table('sensor_settings', function (Blueprint $table) {
-            $table->time('notification_start_at');
-            $table->time('notification_end_at');
+        Schema::create('device_type', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('device_type');
         });
     }
 
@@ -26,6 +27,6 @@ class CreateAddTimeForNotification extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('add_time_for_notification');
+        Schema::dropIfExists('device_type');
     }
 }

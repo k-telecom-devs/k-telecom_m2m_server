@@ -19,11 +19,13 @@ class StationSettingsController extends Controller
         $this->validate($request, [
             'station_id' => 'required',
             'name' => 'required',
+            'version_id' => 'required',
         ]);
 
         try {
             $station_settings = StationSettings::where(['station_id' => $request->station_id])->first();
             $station_settings->name = $request->name;
+            $station_settings->version_id = $request->version_id;
 
             if ($station_settings->save()) {
                 return response()->json(['message' => 'Data created successfully, sensor updated']);

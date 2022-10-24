@@ -360,16 +360,16 @@ post /api/station-settings
 ```
 <br>
 
-## **Отправить новую версию**
-Добавить в базу данных информацию о новой версии программного обеспечения 
+## **Создать новый тип датчика**
+Добавить в базу данных информацию о новом типе датчика 
 ```
 POST /api/device-type
-    device_type:(Указать новый тип датчиков),
+    device_type:(Указать имя нового типа датчика),
 ```
 **Возвращает**
 ```
 {
-    "message": "Version created successfully."
+    "message": "Device type created successfully."
 }
 ```
 <br>

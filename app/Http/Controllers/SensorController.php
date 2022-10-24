@@ -30,6 +30,8 @@ class SensorController extends Controller
             'name' => 'required',
             'version_id' => 'required',
             'device_type_id' => 'required',
+            'group_id' => 'required',
+            'subgroup_id' => 'required',
         ]);
 
         try
@@ -52,6 +54,8 @@ class SensorController extends Controller
             $sensor->mac = $request->mac;
             $sensor->station_id = $request->station_id;
             $sensor->device_type_id = $request->device_type_id;
+            $sensor->mac = $request->mac;
+
 
             if ($sensor->save()){ 
                 $sensor_settings->name = $request->name;
@@ -61,6 +65,8 @@ class SensorController extends Controller
                 $sensor_settings->version_id = $request->version_id;
                 $sensor_settings->sensor_id = $sensor->id;
                 $sensor_settings->station_id = $request->station_id;
+                $sensor_settings->group_id = $request->group_id;
+                $sensor_settings->subgroup_id = $request->subgroup_id;
 
         }
         else{

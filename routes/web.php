@@ -27,11 +27,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/sensor-settings', 'SensorSettingsController@index');
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
-        $router->post('/refresh', 'AuthController@refreshToken');
+        $router->post('/refresh', 'AuthController@refreshToken');        
 
         $router->post('/logout', 'AuthController@logout');
         $router->post('/profile-change', 'AuthController@profile_change');
         $router->get('/profile-change', 'AuthController@get_profile');
+
+        $router->post('/group', 'GroupController@create');
+        $router->post('/subgroup', 'SubgroupController@create');
 
         $router->get('/data', 'DataController@index');
 

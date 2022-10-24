@@ -24,11 +24,12 @@ class StationSettingsController extends Controller
 
         try {
             $station_settings = StationSettings::where(['station_id' => $request->station_id])->first();
+            
             $station_settings->name = $request->name;
             $station_settings->version_id = $request->version_id;
 
             if ($station_settings->save()) {
-                return response()->json(['message' => 'Data created successfully, sensor updated']);
+                return response()->json(['message' => 'Data created successfully, station updated']);
             }
             else {
                 return response()->json(['message' => 'Something gone wrong']);

@@ -40,10 +40,15 @@ class StationController extends Controller
 
             $version_device_type = DeviceType::find($version->device_type_id);
             $real_device_type = DeviceType::find($request->device_type_id);
+            $created_station = Station::where('mac', $request->mac)->get();
+            if($created_station){
+                return response()->json(['message' => 'This station alredy exists '.$created_station]);
+            }
 
             $station->user_id = $user['id'];
-            $station->mac = $request->mac;
             $station->device_type_id = $request->device_type_id;
+
+
 
             if ($station->save()) {
                 $station_settings->name = $request->name;

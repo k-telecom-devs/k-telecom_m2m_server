@@ -6,6 +6,7 @@ use App\Models\Sensor;
 use App\Models\Station;
 use App\Models\Version;
 use App\Models\SensorSettings;
+use App\Models\DeviceType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -40,18 +41,22 @@ class SensorController extends Controller
         {
             $sensor = new Sensor();            
             $sensor_settings = new SensorSettings();
-            $version = Version::where('id', $request->version_id);
-            
+            $version = Version::find($request->version_id);
+
             if(! $version){
                 return response()->json(['message' => 'No version with this id']);
             }
 
-           /*if($version->device_type_id != $request->sensor_type){
+            $version_device_type = DeviceType::find($version->device_type_id);
+            $real_device_type = DeviceType::find($request->device_type_id);
+
+
+           if($version->device_type_id == $request->device_type_id){
                 $sensor_settings->version_id = $request->version_id;
             }
             else{
-                return response()->json(['message' => 'Wrong sensor type. this sensor only for '.$version->sensor_type]);
-            }*/
+                return response()->json(['message' => 'Wrong sensor type. this version only for '.$version_device_type->device_type.". Your device is ". $real_device_type->device_type]);
+            }
             
             $sensor->mac = $request->mac;
             $sensor->station_id = $request->station_id;

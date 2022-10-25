@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Station;
+use App\Models\Version;
+use App\Models\DeviceType;
 use App\Models\StationSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,6 +22,9 @@ class StationController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'mac' => 'required',
+            'device_type_id' => 'required',
+            'version_id' => 'required',
         ]);
 
         try {
@@ -27,6 +32,14 @@ class StationController extends Controller
 
             $station = new Station();
             $station_settings = new StationSettings();
+            
+            $version = Version::find($request->version_id);
+            if(! $version){
+                return response()->json(['message' => 'No version with this id']);
+            }
+
+            $version_device_type = DeviceType::find($version->device_type_id);
+            $real_device_type = DeviceType::find($request->device_type_id);
 
             $station->user_id = $user['id'];
             $station->mac = $request->mac;
@@ -35,7 +48,17 @@ class StationController extends Controller
             if ($station->save()) {
                 $station_settings->name = $request->name;
                 $station_settings->station_id = $station->id;
-                $station_settings->version_id = $request->version_id;
+
+                if($version->device_type_id == $request->device_type_id){
+                    $station_settings->version_id = $request->version_id;
+                }
+                else{
+                    return response()->json(['message' => 'Wrong sensor type. this version only for '.$version_device_type->device_type.". Your device is ". $real_device_type->device_type]);
+                }
+                    $station_settings->version_id = $request->version_id;
+                }
+            else{
+                return response()->json(['message' => 'Something gone wrong.']);
             }
 
             if ($station_settings->save()) {

@@ -53,5 +53,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->post('/device-type', 'DeviceTypeController@create');
 
+        $router->post('/city', 'CityController@store');
+        $router->get('/city', 'CityController@index');
+
     });
 });

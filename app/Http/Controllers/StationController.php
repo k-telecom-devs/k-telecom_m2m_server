@@ -53,7 +53,6 @@ class StationController extends Controller
                 return response()->json(['message' => 'This station alredy exists'. $created_station]);
             }
 
-            $station->name = $request->name;
             $station->mac = $request->mac;
             $station->user_id = $user['id'];
             $station->device_type_id = $request->device_type_id;

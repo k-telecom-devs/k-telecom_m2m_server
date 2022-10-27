@@ -55,7 +55,7 @@ class SensorController extends Controller
                 return response()->json(['message' => 'Wrong sensor type. this version only for ' . $version_device_type->device_type . ". Your device is " . $real_device_type->device_type]);
             }
 
-            $created_sensor = Sensor::where('mac', $request->mac)->get();
+            $created_sensor = Sensor::where('mac', $request->mac)->get()->values();
 
             if (!empty($created_sensor)) {
                 return response()->json(['message' => 'This sensor alredy exists ' . $created_sensor]);

@@ -17,6 +17,7 @@ class VersionController extends Controller
             'file_url' => 'required',
             'description' => 'required',
             'version' => 'required',
+            'device_type_id' => 'required'
         ]);
 
         $version = new Version();

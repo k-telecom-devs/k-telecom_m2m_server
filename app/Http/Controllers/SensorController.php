@@ -50,10 +50,7 @@ class SensorController extends Controller
             $version_device_type = DeviceType::find($version->device_type_id);
             $real_device_type = DeviceType::find($request->device_type_id);
 
-            return response()->json([
-                'message' => ''.$version]);
-
-           if($version->device_type_id == $request->device_type_id){
+            if($version->device_type_id == $request->device_type_id){
                 $sensor_settings->version_id = $request->version_id;
             }
             else{

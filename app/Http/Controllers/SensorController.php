@@ -39,7 +39,7 @@ class SensorController extends Controller
 
         try
         {
-            $sensor = new Sensor();            
+            $sensor = new Sensor();
             $sensor_settings = new SensorSettings();
             $version = Version::find($request->version_id);
 
@@ -59,7 +59,7 @@ class SensorController extends Controller
             }
 
             $created_sensor = Sensor::where('mac', $request->mac)->get();
-            if($created_sensor){
+            if(!empty($created_sensor)){
                 return response()->json(['message' => 'This sensor alredy exists '.$created_sensor]);
             }
 
@@ -68,7 +68,7 @@ class SensorController extends Controller
             $sensor->mac = $request->mac;
 
 
-            if ($sensor->save()){ 
+            if ($sensor->save()){
                 $sensor_settings->name = $request->name;
                 $sensor_settings->sleep = $request->sleep;
                 $sensor_settings->notification_start_at = $request->notification_start_at;
@@ -97,7 +97,7 @@ class SensorController extends Controller
         }
         catch (\Exception $e)
         {
-            return response()->json(['message' => $e->getMessage()]);
+            return response()->json(['exception' => $e->getMessage()]);
         }
     }
 }

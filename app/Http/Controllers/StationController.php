@@ -47,7 +47,7 @@ class StationController extends Controller
                 return response()->json(['message' => 'Wrong sensor type. this version only for ' . $version_device_type->device_type . ". Your device is " . $real_device_type->device_type]);
             }
 
-            if(Station::where('mac', $request->mac)->exist()) {
+            if(Station::where('mac', $request->mac)->exists()) {
                 return response()->json(['message' => 'This station alredy exists']);
             }
 

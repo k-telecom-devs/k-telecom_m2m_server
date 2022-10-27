@@ -13,8 +13,9 @@ class AuthController extends Controller
         $name = $request->name;
         $email = $request->email;
         $password = $request->password;
+        $phone_number = $request->phone_number;
 
-        if (empty($name) or empty($email) or empty($password)) {
+        if (empty($name) or empty($email) or empty($password) or empty($phone_number) or $phone_number <= 80000000000) {
             return response()->json(['status' => 'error', 'message' => 'You must fill all the fields']);
         }
 
@@ -35,6 +36,7 @@ class AuthController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = app('hash')->make($request->password);
+            $user->phone_number = $phone_number;
 
             if ($user->save()) {
                 return $this->login($request);
@@ -87,7 +89,9 @@ class AuthController extends Controller
 
         if ($user->save()){
             return response()->json(['message' => 'Data updated successfully']);
-    }
+        } else {
+            return response()->json(['message' => 'Something gone wrong']);
+        }
     }
 
     public function get_profile(): JsonResponse

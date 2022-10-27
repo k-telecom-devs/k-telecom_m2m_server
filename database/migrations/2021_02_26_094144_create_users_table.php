@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->timestamps();
-            $table->string('phone_number')->default('0');
+            $table->unsignedInteger('phone_number')->unique();
             $table->boolean('notifications')->default(0);
             $table->boolean('auto_update')->default(0);
             $table->boolean('auto_pay')->default(0);

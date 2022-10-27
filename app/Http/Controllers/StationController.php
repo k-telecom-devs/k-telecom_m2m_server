@@ -50,7 +50,7 @@ class StationController extends Controller
             }
 
             if(!empty($created_station)){
-                return response()->json(['message' => 'This station alredy exists']);
+                return response()->json(['message' => 'This station alredy exists'. $created_station]);
             }
 
             $station->user_id = $user['id'];

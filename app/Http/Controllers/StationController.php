@@ -40,9 +40,17 @@ class StationController extends Controller
 
             $version_device_type = DeviceType::find($version->device_type_id);
             $real_device_type = DeviceType::find($request->device_type_id);
+
             $created_station = Station::where('mac', $request->mac)->get();
+
+            if ($version->device_type_id == $request->device_type_id) {
+                $station_settings->version_id = $request->version_id;
+            } else {
+                return response()->json(['message' => 'Wrong sensor type. this version only for ' . $version_device_type->device_type . ". Your device is " . $real_device_type->device_type]);
+            }
+
             if(!empty($created_station)){
-                return response()->json(['message' => 'This station alredy exists ']);
+                return response()->json(['message' => 'This station alredy exists']);
             }
 
             $station->user_id = $user['id'];
@@ -51,15 +59,8 @@ class StationController extends Controller
             if ($station->save()) {
                 $station_settings->name = $request->name;
                 $station_settings->station_id = $station->id;
-
-                if($version->device_type_id == $request->device_type_id){
-                    $station_settings->version_id = $request->version_id;
-                }
-                else{
-                    return response()->json(['message' => 'Wrong sensor type. this version only for '.$version_device_type->device_type.". Your device is ". $real_device_type->device_type]);
-                }
-                    $station_settings->version_id = $request->version_id;
-                }
+                $station_settings->version_id = $request->version_id;
+            }
             else{
                 return response()->json(['message' => 'Something gone wrong.']);
             }

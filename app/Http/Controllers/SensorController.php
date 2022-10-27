@@ -37,29 +37,28 @@ class SensorController extends Controller
             'max_trigger' => 'required',
         ]);
 
-        try
-        {
+        try {
             $sensor = new Sensor();
             $sensor_settings = new SensorSettings();
             $version = Version::find($request->version_id);
 
-            if(! $version){
+            if (!$version) {
                 return response()->json(['message' => 'No version with this id']);
             }
 
             $version_device_type = DeviceType::find($version->device_type_id);
             $real_device_type = DeviceType::find($request->device_type_id);
 
-            if($version->device_type_id == $request->device_type_id){
+            if ($version->device_type_id == $request->device_type_id) {
                 $sensor_settings->version_id = $request->version_id;
-            }
-            else{
-                return response()->json(['message' => 'Wrong sensor type. this version only for '.$version_device_type->device_type.". Your device is ". $real_device_type->device_type]);
+            } else {
+                return response()->json(['message' => 'Wrong sensor type. this version only for ' . $version_device_type->device_type . ". Your device is " . $real_device_type->device_type]);
             }
 
             $created_sensor = Sensor::where('mac', $request->mac)->get();
-            if(!empty($created_sensor)){
-                return response()->json(['message' => 'This sensor alredy exists '.$created_sensor]);
+
+            if (!empty($created_sensor)) {
+                return response()->json(['message' => 'This sensor alredy exists ' . $created_sensor]);
             }
 
             $sensor->station_id = $request->station_id;
@@ -67,7 +66,7 @@ class SensorController extends Controller
             $sensor->mac = $request->mac;
 
 
-            if ($sensor->save()){
+            if ($sensor->save()) {
                 $sensor_settings->name = $request->name;
                 $sensor_settings->sleep = $request->sleep;
                 $sensor_settings->notification_start_at = $request->notification_start_at;
@@ -80,22 +79,16 @@ class SensorController extends Controller
                 $sensor_settings->min_trigger = $request->min_trigger;
                 $sensor_settings->max_trigger = $request->max_trigger;
 
-        }
-        else{
-            return response()->json(['message' => 'Something gone wrong.']);
-        }
-            if ($sensor_settings->save() && $sensor->save())
-            {
-                return response()->json(['message' => 'Sensor created successfully.']);
+            } else {
+                return response()->json(['message' => 'Something gone wrong.']);
             }
-            else
-            {
+            if ($sensor_settings->save() && $sensor->save()) {
+                return response()->json(['message' => 'Sensor created successfully.']);
+            } else {
                 $sensor->delete();
                 return response()->json(['message' => 'Sensor created but station settings cant be init.']);
             }
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()]);
         }
     }

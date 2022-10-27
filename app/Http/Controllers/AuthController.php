@@ -15,7 +15,7 @@ class AuthController extends Controller
         $password = $request->password;
         $phone_number = $request->phone_number;
 
-        if (empty($name) or empty($email) or empty($password) or empty($phone_number) or $phone_number <= 80000000000) {
+        if (empty($name) or empty($email) or empty($password) or empty($phone_number) or $phone_number <= 9000000000) {
             return response()->json(['status' => 'error', 'message' => 'You must fill all the fields']);
         }
 

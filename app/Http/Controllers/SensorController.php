@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Sensor;
 use App\Models\Station;
 use App\Models\Version;
+use App\Models\Group;
+use App\Models\Subgroup;
 use App\Models\SensorSettings;
 use App\Models\DeviceType;
 use Illuminate\Http\JsonResponse;
@@ -49,6 +51,9 @@ class SensorController extends Controller
 
             $version_device_type = DeviceType::find($version->device_type_id);
             $real_device_type = DeviceType::find($request->device_type_id);
+            if (!$real_device_type){
+                return response()->json(['message' => 'No device type with this id']);
+            }
 
             if ($version->device_type_id == $request->device_type_id) {
                 $sensor_settings->version_id = $request->version_id;
@@ -60,6 +65,16 @@ class SensorController extends Controller
 
             if (!empty($created_sensor[0])) {
                 return response()->json(['message' => 'This sensor alredy exists ' . $created_sensor]);
+            }
+
+            $created_group = Group::find($request->group_id);
+            if (!$created_group){
+                return response()->json(['message' => 'No group with this id']);
+            }
+
+            $created_subgroup = Subgroup::find($request->subgroup_id);
+            if (!$created_subgroup){
+                return response()->json(['message' => 'No subgroup with this id']);
             }
 
             $sensor->station_id = $request->station_id;
@@ -90,6 +105,8 @@ class SensorController extends Controller
                 return response()->json(['message' => 'Sensor created but station settings cant be init.']);
             }
         } catch (\Exception $e) {
+            $sensor->delete();
+            $sensor_settings->delete();
             return response()->json(['exception' => $e->getMessage()]);
         }
     }

@@ -77,20 +77,6 @@ POST /api/login
 ```
 <br>
 
-## **Обновить токен**
-
-Обновляет токен авторизованного пользователя
-```
-POST /api/refresh 
-```
-**Возвращает**
-```
-{
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6NTAwMFwvYXBpXC9yZWdpc3RlciIsImlhdCI6MTY2NjE1OTcxOCwiZXhwIjoxNjY2MjA2NTE4LCJuYmYiOjE2NjYxNTk3MTgsImp0aSI6ImRyT09OS2RJTkRZSUQyZnEiLCJzdWIiOjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bWdN2EsvLAdxMaYoZTNAO2jpjpUV1ryNLpR90zHtTIw"
-}
-```
-<br>
-
 ## **Отправить данные датчика.**
 Добавляет данные value и mac на момент отправки запроса и обновляет данные uptime и charge у датчика с соответсвующим mac.
 ```
@@ -141,6 +127,34 @@ GET /api/sensor-settings
 <br><br>
 
 # Запросы с токкеном аутентификации
+
+## **Обновить токен**
+
+Обновляет токен авторизованного пользователя
+```
+POST /api/refresh 
+```
+**Возвращает**
+```
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6NTAwMFwvYXBpXC9yZWdpc3RlciIsImlhdCI6MTY2NjE1OTcxOCwiZXhwIjoxNjY2MjA2NTE4LCJuYmYiOjE2NjYxNTk3MTgsImp0aSI6ImRyT09OS2RJTkRZSUQyZnEiLCJzdWIiOjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bWdN2EsvLAdxMaYoZTNAO2jpjpUV1ryNLpR90zHtTIw"
+}
+```
+<br>
+
+## **logout**
+
+Обнуляет токен авторизованного пользователя
+```
+POST /api/logout
+```
+**Возвращает**
+```
+{
+    "message": "Successfully logged out"
+}
+```
+<br>
 
 ## **Получить данные датчиков пользователя**
 Сервер отправит данные всех датчиков со всех станций, которые пренадлежат пользователю
@@ -238,6 +252,8 @@ POST /api/sensor
     sleep:(Временой промежуток отправления значений датчика),
     group_id:(Группа, к которой будет относится датчик),
     subgroup_id:(Подгруппа, к которой будет относиться датчик),
+    min_trigger:(При меньших значениях отправляется уведомление),
+    max_trigger:(При больших значениях отправляется уведомление),
 ```
 **Возвращает**
 ```
@@ -428,7 +444,7 @@ POST /api/subgroup
 Добавить город, в котором будут работать станции 
 ```
 POST /api/city
-    city_name:(Имя новой группы),
+    city_name:(Имя нового города),
 ```
 **Возвращает**
 ```
@@ -459,12 +475,6 @@ GET /api/city
             "updated_at": "2022-10-25T06:15:52.000000Z",
             "city_name": "hui2"
         },
-        {
-            "id": 3,
-            "created_at": "2022-10-25T06:46:06.000000Z",
-            "updated_at": "2022-10-25T06:46:06.000000Z",
-            "city_name": "hui2"
-        }
     ]
 }
 ```

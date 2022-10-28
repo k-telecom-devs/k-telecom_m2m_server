@@ -20,7 +20,10 @@ class CityController extends Controller
         ]);
 
         try {
-
+            $created_city = City::where('city_name', $request->city_name)->get();
+            if (!empty($created_city[0])) {
+                return response()->json(['message' => 'This city alredy exists ' . $created_city]);
+            }
             $city = new City;
 
             $city->city_name = $request->city_name;

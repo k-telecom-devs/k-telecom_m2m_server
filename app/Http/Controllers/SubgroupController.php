@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subgroup;
+use App\Models\Group;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,11 @@ class SubgroupController extends Controller
             'group_id' => 'required',
         ]);
 
+        $group = Group::find($request->group_id);
+        if(!$group){
+            return response()->json(['message' => 'No group with this id']);
+        }
+        
         try {
             $user = auth()->user();
             $subgroup = new Subgroup();

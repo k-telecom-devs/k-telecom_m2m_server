@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StationSettings;
 use App\Models\Station;
+use App\Models\City;
 use App\Models\Version;
 use App\Models\DeviceType;
 use Illuminate\Http\JsonResponse;
@@ -26,14 +27,23 @@ class StationSettingsController extends Controller
         ]);
 
         try {
+            $city = City::find($request->city_id);
+            if(!$city){
+                return response()->json(['message' => 'No city with this id']);
+            }
+            $station = Station::find($request->station_id);
+            if(!$station){
+                return response()->json(['message' => 'No station with this id']);
+            }
             $station_settings = StationSettings::where(['station_id' => $request->station_id])->first();
-
+            if(!$station_settings){
+                return response()->json(['message' => 'No settings for station with this id']);
+            }
             $version = Version::find($request->version_id);
             if(! $version){
                 return response()->json(['message' => 'No version with this id']);
             }
 
-            $station = Station::find($request->station_id);
             $version_device_type = DeviceType::find($version->device_type_id);
             $real_device_type = DeviceType::find($station->device_type_id);
 

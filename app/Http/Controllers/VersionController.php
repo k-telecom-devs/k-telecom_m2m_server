@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Version;
+use App\Models\DeviceType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,9 +20,13 @@ class VersionController extends Controller
             'version' => 'required',
             'device_type_id' => 'required'
         ]);
+        $version_device_type = DeviceType::find($request->device_type_id);
+        if(!$version_device_type){
+            return response()->json(['message' => 'No device type with this id']);
+        }
 
+        try{
         $version = new Version();
-
         $version->file_url = $request->file_url;
         $version->device_type_id = $request->device_type_id;
         $version->description = $request->description;
@@ -30,6 +35,11 @@ class VersionController extends Controller
         if($version->save())
             return response()->json(['message' => 'Version created successfully.']);
         else
-            return response()->json(['message' => 'Something wrong.']);
+            return response()->json(['message' => 'Something gone wrong.']);
+        }   
+        catch (\Exception $e) {
+            $version->delete();
+            return response()->json(['message' => $e->getMessage()]);
+        }
     }
 }

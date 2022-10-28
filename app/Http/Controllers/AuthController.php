@@ -75,7 +75,7 @@ class AuthController extends Controller
     }
 
     public function profile_change(Request $request): JsonResponse
-    {
+    {   try{
         $u = auth()->user();
 
         $user = User::find($u['id']);
@@ -93,6 +93,11 @@ class AuthController extends Controller
             return response()->json(['message' => 'Something gone wrong']);
         }
     }
+    catch (\Exception $e) {
+
+        return response()->json(['message' => $e->getMessage()]);
+    }   
+}
 
     public function get_profile(): JsonResponse
     {

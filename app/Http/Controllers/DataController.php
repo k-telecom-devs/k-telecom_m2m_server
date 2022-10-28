@@ -27,6 +27,9 @@ class DataController extends Controller
         try {
 
             $sensor = Sensor::where(['mac' => $request->mac])->first();
+            if(!$sensor){
+                return response()->json(['message' => 'No sensor with this mac']);
+            }
 
             $data = new Data();
             $data->value = $request->value;

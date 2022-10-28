@@ -76,7 +76,9 @@ class SensorController extends Controller
             if (!$created_subgroup){
                 return response()->json(['message' => 'No subgroup with this id']);
             }
-
+            if($created_subgroup->group_id != $request->group_id){
+                return response()->json(['message' => 'Subgroup does not belong to the group']);
+            }
             $sensor->station_id = $request->station_id;
             $sensor->device_type_id = $request->device_type_id;
             $sensor->mac = $request->mac;

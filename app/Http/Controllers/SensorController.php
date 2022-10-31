@@ -92,14 +92,15 @@ class SensorController extends Controller
             $sensor_settings->notification_start_at = $request->notification_start_at;
             $sensor_settings->notification_end_at = $request->notification_end_at;
             $sensor_settings->version_id = $request->version_id;
-            $sensor_settings->sensor_id = $sensor->id;
             $sensor_settings->station_id = $request->station_id;
             $sensor_settings->group_id = $request->group_id;
             $sensor_settings->subgroup_id = $request->subgroup_id;
             $sensor_settings->min_trigger = $request->min_trigger;
             $sensor_settings->max_trigger = $request->max_trigger;
 
-            if ($sensor_settings->save() && $sensor->save()) {
+            if ($sensor->save()) {
+                $sensor_settings->sensor_id = $sensor->id;
+                $sensor_settings->save();
                 return response()->json(['message' => 'Sensor created successfully.']);
             } else {
                 $sensor->delete();

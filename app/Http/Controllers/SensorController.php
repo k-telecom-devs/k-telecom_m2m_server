@@ -21,6 +21,7 @@ class SensorController extends Controller
         $stations = Station::where('user_id', $user['id'])->pluck('id')->all();
 
         return Sensor::with('data')
+            ->with('settings')
             ->whereIn('station_id', $stations)
             ->get()->values();
     }

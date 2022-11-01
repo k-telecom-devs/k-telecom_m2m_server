@@ -17,7 +17,7 @@ class CreateSensorsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('mac');
+            $table->string('mac')->unique();
             $table->unsignedBigInteger('uptime')->nullable();
             $table->tinyInteger('charge')->nullable();
 

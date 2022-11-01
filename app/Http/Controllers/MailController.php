@@ -15,7 +15,7 @@ class MailController extends Controller
         
         $mail->SMTPDebug = 4;
         $mail->isSMTP();
-        $mail->Host = 'smtp.yandex.ru';
+        $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = '383d802a4c84af5ac3719276218bb9@gmail.com';
         $mail->Password = '7fc7f9e73856bd42a257ce7aac54fc3687f7ad60';

@@ -26,6 +26,23 @@ class SensorController extends Controller
             ->get()->values();
     }
 
+    public function del(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+
+        $sensor = Sensor::where('mac', $request->mac)->first();
+        if ($sensor){
+          $sensor_settings = SensorSettings::where('sensor_id', $sensor->id)->first();
+          $sensor_settings->delete();
+          $sensor->delete();
+          return response()->json(['message' => 'Delete successfully']);
+        }
+        else{
+        return response()->json(['message' => "Can't find mac"]);
+        }
+    }
+
+
     public function create(Request $request): JsonResponse
     {
         $this->validate($request, [

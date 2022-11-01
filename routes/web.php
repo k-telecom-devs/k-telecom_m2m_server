@@ -48,6 +48,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->get('/sensor', 'SensorController@index');
         $router->post('/sensor', 'SensorController@create');
+        $router->post('/del', 'SensorController@del');
 
         $router->post('/sensor-settings', 'SensorSettingsController@edit');
 
@@ -56,7 +57,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/city', 'CityController@store');
         $router->get('/city', 'CityController@index');
 
-        //$router->post('/mail', 'MailController@index');
+        $router->post('/mail', 'MailController@index');
 
     });
 });

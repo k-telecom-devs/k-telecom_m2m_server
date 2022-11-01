@@ -26,7 +26,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/data', 'DataController@store');
     $router->get('/sensor-settings', 'SensorSettingsController@index');
 
-    $router->post('/mail', 'MailController@index');
+    $router->post('/mail', 'MailController@code');
     
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('/refresh', 'AuthController@refreshToken');        

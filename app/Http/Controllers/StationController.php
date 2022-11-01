@@ -61,14 +61,14 @@ class StationController extends Controller
             $station->mac = $request->mac;
             $station->user_id = $user['id'];
             $station->device_type_id = $request->device_type_id;
-            
+
             if($station->save()){
                 $station_settings->name = $request->name;
                 $station_settings->station_id = $station->id;
                 $station_settings->version_id = $request->version_id;
             }
-            
-            if ($station_settings->save() && $station->save()) {
+
+            if ($station_settings->save()) {
                 return response()->json(['message' => 'Station created successfully.']);
             } else {
                 $station->delete();

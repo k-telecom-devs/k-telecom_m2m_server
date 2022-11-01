@@ -32,8 +32,12 @@ class MailController extends Controller
         $code = rand(100000,1000000);
         $mail->Body = $code;
         try{
-            $mail->send();
+            if ($mail->send()){
             return response()->json(['message' => 'Mail send', 'code'=> hash('md5', $code)]);
+            }
+            else{
+                return response()->json(['message' => 'Something gone wrong']);
+            }
         }
 
         catch (\Exception $e) {

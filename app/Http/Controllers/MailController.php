@@ -13,26 +13,27 @@ class MailController extends Controller
         $user = auth()->user();
         $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
         
-        $mail->SMTPDebug = 4;
+        $mail->SMTPDebug = 0;
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = env('MAIL_HOST');
         $mail->SMTPAuth = true;
-        $mail->Username = '383d802a4c84af5ac3719276218bb9@gmail.com';
-        $mail->Password = '7fc7f9e73856bd42a257ce7aac54fc3687f7ad60';
-        $mail->SMTPSecure = 'SSL';
-        $mail->Port = 465;
+        $mail->Username = env('MAIL_USERNAME');
+        $mail->Password = env('MAIL_PASSWORD');
+        $mail->SMTPSecure = env('MAIL_ENCRYPTION');
+        $mail->Port = env('MAIL_PORT');
         $mail->CharSet = 'UTF-8';
 
-        $mail->setFrom('383d802a4c84af5ac3719276218bb9@gmail.com', 'K-Telecom');
-        $mail->addAddress($user['email']);//$request->email);
+        $mail->setFrom('m2m_server@k-telecom.org', 'K-Telecom');
+        $mail->addAddress($request->email);
         
 
         $mail->isHTML(true);
         $mail->Subject = 'Test';
-        $mail->Body = 'send smth';
-
+        $code = rand(100000,1000000);
+        $mail->Body = $code;
         try{
-            return $mail->send();
+            $mail->send();
+            return response()->json(['message' => 'Mail send', 'code'=> hash('md5', $code)]);
         }
 
         catch (\Exception $e) {

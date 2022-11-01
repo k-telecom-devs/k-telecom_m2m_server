@@ -73,7 +73,23 @@ POST /api/login
     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6NTAwMFwvYXBpXC9yZWdpc3RlciIsImlhdCI6MTY2NjE1OTcxOCwiZXhwIjoxNjY2MjA2NTE4LCJuYmYiOjE2NjYxNTk3MTgsImp0aSI6ImRyT09OS2RJTkRZSUQyZnEiLCJzdWIiOjIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bWdN2EsvLAdxMaYoZTNAO2jpjpUV1ryNLpR90zHtTIw",
     "token_type": "bearer",
     "expires_in": 46800 
-    }
+}
+```
+<br>
+
+## **Отправить код подтверждения**
+
+отсылает 6-ти значный код доступа. Приложение получит md5 hash этого кода
+```
+POST /api/mail
+    email:(Почта пользователя, на которую придет код)
+```
+**Возвращает**
+```
+{
+    "message": "Mail send",
+    "code": "c052d9948206cbebf01a77b78ead25bb"
+}
 ```
 <br>
 

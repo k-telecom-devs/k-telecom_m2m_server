@@ -56,5 +56,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/city', 'CityController@store');
         $router->get('/city', 'CityController@index');
 
+        //$router->post('/mail', 'MailController@index');
+
     });
 });

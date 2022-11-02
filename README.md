@@ -397,10 +397,7 @@ GET /api/station
             "name": "Ebasosina",
             "station_id": 2
         }
-<<<<<<< HEAD
-=======
     }
->>>>>>> c48cb0e43f29cfc8c622558d3b9a52a4c51db8f5
 ]
 ```
 <br>

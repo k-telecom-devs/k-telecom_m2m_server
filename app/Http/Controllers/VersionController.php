@@ -33,7 +33,7 @@ class VersionController extends Controller
         $version->version = $request->version;
 
         if($version->save())
-            return response()->json(['message' => 'Version created successfully.']);
+            return response()->json(['message' => 'Version created successfully. Versinon id - '.$version->id]);
         else
             return response()->json(['message' => 'Something gone wrong.']);
         }   
@@ -42,4 +42,10 @@ class VersionController extends Controller
             return response()->json(['message' => $e->getMessage()]);
         }
     }
+
+    public function index(Request $request): JsonResponse
+    {
+        return response()->json(['message' => Version::all()]);
+    }
+
 }

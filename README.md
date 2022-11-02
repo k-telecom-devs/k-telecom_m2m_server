@@ -423,7 +423,48 @@ POST /api/version
 **Возвращает**
 ```
 {
-    "message": "Version created successfully."
+    "message": "Version created successfully. Versinon id - 1"
+}
+```
+<br>
+
+## **Получить все версии**
+Отправляет список всех существующих версий 
+```
+GET /api/version
+```
+**Возвращает**
+```
+{
+    "message": [
+        {
+            "id": 1,
+            "created_at": "2022-10-25T04:19:35.000000Z",
+            "updated_at": "2022-10-25T04:19:35.000000Z",
+            "file_url": "kakoy/to/url/for/temp",
+            "version": "3.2.2",
+            "description": "gradusnik, ebat",
+            "device_type_id": 2
+        },
+        {
+            "id": 2,
+            "created_at": "2022-10-25T04:19:56.000000Z",
+            "updated_at": "2022-10-25T04:19:56.000000Z",
+            "file_url": "kakoy/to/url/for/hub",
+            "version": "2.2.8",
+            "description": "hub, ebat",
+            "device_type_id": 1
+        },
+        {
+            "id": 8,
+            "created_at": "2022-11-02T04:25:23.000000Z",
+            "updated_at": "2022-11-02T04:25:23.000000Z",
+            "file_url": "kakoy/to/url/for/hub2",
+            "version": "2.2.8a",
+            "description": "hub, ebat",
+            "device_type_id": 1
+        }
+    ]
 }
 ```
 <br>

@@ -47,6 +47,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/station-settings', 'StationSettingsController@edit');
 
         $router->post('/version', 'VersionController@create');
+        $router->get('/version', 'VersionController@index');
 
         $router->get('/sensor', 'SensorController@index');
         $router->post('/sensor', 'SensorController@create');

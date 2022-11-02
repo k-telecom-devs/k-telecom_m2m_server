@@ -18,6 +18,28 @@ class StationController extends Controller
         return Station::with('settings')->where('user_id', $user['id'])->get()->values();
     }
 
+    public function del(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+
+        $station = Station::where('mac', $request->mac)->first();
+        if ($station){
+            if($station->user_id == $user['id']){
+                $station_settings = StationSettings::where('station_id', $station->id)->first();
+                $station_settings->delete();
+                $station->delete();
+                return response()->json(['message' => 'Delete successfully']);
+            }
+            else{
+                return response()->json(['message' => "Station don't belongs to this user"]);
+            }
+        }
+        else{
+        return response()->json(['message' => "Can't find mac"]);
+        }
+    }
+
+
     public function create(Request $request): JsonResponse
     {
         $this->validate($request, [

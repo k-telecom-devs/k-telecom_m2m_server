@@ -87,7 +87,6 @@ class SensorSettingsController extends Controller
             else{
                 return response()->json(['message' => 'Wrong sensor type. this version only for '.$version_device_type->device_type.". Your device is ". $real_device_type->device_type]);
             }
-
             $sensor_settings->name = $request->name;
             $sensor_settings->sleep = $request->sleep;
             $sensor_settings->version_id = $request->version_id;
@@ -99,9 +98,9 @@ class SensorSettingsController extends Controller
             $sensor_settings->min_trigger = $request->min_trigger;
             $sensor_settings->max_trigger = $request->max_trigger;
 
-            
+            $sensor->station_id = $request->station_id;
 
-            if ($sensor_settings->save()) {
+            if ($sensor_settings->save() && $sensor->save()) {
                 return response()
                     ->json(['message' => 'Data created successfully, sensor updated']);
             }

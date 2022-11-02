@@ -42,6 +42,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->get('/station', 'StationController@index');
         $router->post('/station', 'StationController@create');
+        $router->delete('/station', 'StationController@del');
 
         $router->get('/station-settings', 'StationSettingsController@index');
         $router->post('/station-settings', 'StationSettingsController@edit');
@@ -51,7 +52,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
         $router->get('/sensor', 'SensorController@index');
         $router->post('/sensor', 'SensorController@create');
-        $router->post('/del', 'SensorController@del');
+        $router->delete('/sensor', 'SensorController@del');
 
         $router->post('/sensor-settings', 'SensorSettingsController@edit');
 

@@ -282,7 +282,7 @@ POST /api/sensor
 ## **Изменить настройки датчика**
 Изменение текущих настроек определенного датчика, принадлежащего пользователю 
 ```
-post /api/sensor-settings
+POST /api/sensor-settings
     sensor_id:(id датчика, которому принадлежат эти настройки),
     name:(Новое имя датчика),
     sleep:(Интервал работы датчика),
@@ -303,6 +303,20 @@ post /api/sensor-settings
 ```
 <br>
 
+## **Удалить датчик**
+Удалить датчик по его mac 
+```
+DELETE /api/sensor-settings
+    mac:(mac датчика, который будет удален),
+```
+**Возвращает**
+```
+{
+    "message": "Delete successfully"
+}
+```
+<br>
+
 ## **Регистрация новой станции**
 Добавление станции пользователя в базу данных
 ```
@@ -316,6 +330,20 @@ POST /api/station
 ```
 {
     "message": "Station created successfully."
+}
+```
+<br>
+
+## **Удалить станции**
+Удалить датчик по его mac 
+```
+DELETE /api/sensor-settings
+    mac:(mac станции, который будет удален),
+```
+**Возвращает**
+```
+{
+    "message": "Delete successfully"
 }
 ```
 <br>

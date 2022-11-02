@@ -32,10 +32,16 @@ class SensorController extends Controller
 
         $sensor = Sensor::where('mac', $request->mac)->first();
         if ($sensor){
-          $sensor_settings = SensorSettings::where('sensor_id', $sensor->id)->first();
-          $sensor_settings->delete();
-          $sensor->delete();
-          return response()->json(['message' => 'Delete successfully']);
+            $station = Station::where('id', $sensor->station_id)->first();
+            if($user['id'] == $station->user_id){
+            $sensor_settings = SensorSettings::where('sensor_id', $sensor->id)->first();
+            $sensor_settings->delete();
+            $sensor->delete();
+            return response()->json(['message' => 'Delete successfully']);
+            }
+            else{
+                return response()->json(['message' => "Sensor don't belongs to this user"]);
+            }
         }
         else{
         return response()->json(['message' => "Can't find mac"]);

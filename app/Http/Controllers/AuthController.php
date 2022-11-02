@@ -55,6 +55,34 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
 
+    public function confirm(): JsonResponse
+    {
+        try{
+            $u = auth()->user();
+    
+            $user = User::find($u['id']);
+            if($user){
+                $user->email_verified = true;
+                if ($user->save()){
+                    return response()->json(['message' => 'Successfully confirm']);
+                }
+                else{
+                    return response()->json(['message' => 'Somthing gone wrong']);
+                }
+            }
+            else{
+                return response()->json(['message' => "Can't find user"]);
+            }
+
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    catch (\Exception $e) {
+
+        return response()->json(['message' => $e->getMessage()]);
+    }
+    }
+
     public function login(Request $request): JsonResponse
     {
         $email = $request->email;

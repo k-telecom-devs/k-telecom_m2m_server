@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
-class Authenticate
+class VerifiedMiddleware
 {
     /**
      * The authentication guard factory instance.
@@ -33,10 +33,11 @@ class Authenticate
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
-        if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+        $user = auth()->user();
+        if ($user['email_verified'] == false) {
+            return response('Unverified.', 401);
         }
 
         return $next($request);

@@ -27,39 +27,45 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/sensor-settings', 'SensorSettingsController@index');
 
     $router->post('/mail', 'MailController@code');
+
+
     
     $router->group(['middleware' => 'auth'], function () use ($router) {
-        $router->post('/refresh', 'AuthController@refreshToken');        
-
         $router->post('/logout', 'AuthController@logout');
-        $router->post('/profile-change', 'AuthController@profile_change');
-        $router->get('/profile-change', 'AuthController@get_profile');
+        $router->post('/refresh', 'AuthController@refreshToken');        
+        $router->get('/confirm', 'AuthController@confirm');
 
-        $router->post('/group', 'GroupController@create');
-        $router->post('/subgroup', 'SubgroupController@create');
 
-        $router->get('/data', 'DataController@index');
+        $router->group(['middleware' => 'verified'], function () use ($router) {
 
-        $router->get('/station', 'StationController@index');
-        $router->post('/station', 'StationController@create');
-        $router->delete('/station', 'StationController@del');
+            $router->post('/profile-change', 'AuthController@profile_change');
+            $router->get('/profile-change', 'AuthController@get_profile');
 
-        $router->get('/station-settings', 'StationSettingsController@index');
-        $router->post('/station-settings', 'StationSettingsController@edit');
+            $router->post('/group', 'GroupController@create');
+            $router->post('/subgroup', 'SubgroupController@create');
 
-        $router->post('/version', 'VersionController@create');
-        $router->get('/version', 'VersionController@index');
+            $router->get('/data', 'DataController@index');
 
-        $router->get('/sensor', 'SensorController@index');
-        $router->post('/sensor', 'SensorController@create');
-        $router->delete('/sensor', 'SensorController@del');
+            $router->get('/station', 'StationController@index');
+            $router->post('/station', 'StationController@create');
+            $router->delete('/station', 'StationController@del');
 
-        $router->post('/sensor-settings', 'SensorSettingsController@edit');
+            $router->get('/station-settings', 'StationSettingsController@index');
+            $router->post('/station-settings', 'StationSettingsController@edit');
 
-        $router->post('/device-type', 'DeviceTypeController@create');
+            $router->post('/version', 'VersionController@create');
+            $router->get('/version', 'VersionController@index');
 
-        $router->post('/city', 'CityController@store');
-        $router->get('/city', 'CityController@index');
+            $router->get('/sensor', 'SensorController@index');
+            $router->post('/sensor', 'SensorController@create');
+            $router->delete('/sensor', 'SensorController@del');
 
+            $router->post('/sensor-settings', 'SensorSettingsController@edit');
+
+            $router->post('/device-type', 'DeviceTypeController@create');
+
+            $router->post('/city', 'CityController@store');
+            $router->get('/city', 'CityController@index');
+        });
     });
 });

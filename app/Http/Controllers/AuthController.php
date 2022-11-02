@@ -66,7 +66,7 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        auth()->factory()->setTTL(780);
+        auth()->factory()->setTTL(3000);
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -96,7 +96,7 @@ class AuthController extends Controller
     catch (\Exception $e) {
 
         return response()->json(['message' => $e->getMessage()]);
-    }   
+    }
 }
 
     public function get_profile(): JsonResponse
@@ -122,6 +122,7 @@ class AuthController extends Controller
 
     public function refreshToken(): JsonResponse
     {
+        auth()->factory()->setTTL(1);
         return response()->json(['token' => auth()->fromUser(auth()->user())]);
     }
 }

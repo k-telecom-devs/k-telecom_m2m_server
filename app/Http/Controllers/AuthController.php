@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Http\Controllers\MailController;
 
 class AuthController extends Controller
 {
@@ -152,24 +153,48 @@ class AuthController extends Controller
     }
 
 
-    public function password_reset(Request $request): JsonResponse
+    public function generateResetHash(Request $request): JsonResponse
     {
-        $u = auth()->user();
-    
-        $user = User::find($u['id']);
-        $password = $request->password;
-        if(!empty($password) && $user){
-            $user->email_verified = false;
-            $user->password = app('hash')->make($request->password);
+        $user = User::where('email', $request->email)->first();
+        if (!$user){
+            return response()->json(['message' => "Can't find user. Wrong email"]);
+        }
+        $code = rand(100000,999999);
+        if($user->name == $request->name){
+            $newCode = new MailController;
+            $newCode::sendCode($request, "send your code here\n".env('SERVER_URL').'/api/new-password ', $code);
+            $user->password_reset_hash = hash('sha512', $code);
             if($user->save()){
-                return response()->json(['message' => 'Success']);
+                return response()->json(['message' => 'Mail send, hash generate']);
             }
             else{
                 return response()->json(['message' => 'Something gone wrong']);
             }
         }
         else{
-            return response()->json(['message' => "Password is empty or user don't found"]);
+            return response()->json(['message' => "User with this email have other name"]);
+        }
+    }
+
+    public function newPassword(Request $request): JsonResponse
+    {
+        $user = User::where('email', $request->email)->first();
+        $codeHash = hash('sha512', $request->code);
+        if (!$user){
+            return response()->json(['message' => "Can't find user. Wrong email"]);
+        }
+        if($user->password_reset_hash == $codeHash){
+            $user->password = app('hash')->make($request->password);
+            $user->password_reset_hash = null;
+            if($user->save()){
+            return response()->json(['message' => "Password change"]);
+            }
+            else{
+                return response()->json(['message' => "Something gone wrong"]);
+            }
+        }
+        else{
+            return response()->json(['message' => "Wrong code"]);
         }
     }
 }

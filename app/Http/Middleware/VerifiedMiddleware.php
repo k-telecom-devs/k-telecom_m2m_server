@@ -37,7 +37,7 @@ class VerifiedMiddleware
     {
         $user = auth()->user();
         if ($user['email_verified'] == false) {
-            return response('Unverified.', 401);
+            return response('Unverified.', 403);
         }
 
         return $next($request);

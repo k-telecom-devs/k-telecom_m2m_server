@@ -26,7 +26,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/data', 'DataController@store');
     $router->get('/sensor-settings', 'SensorSettingsController@index');
 
-    $router->post('/mail', 'MailController@code');
+    $router->post('/mail', 'MailController@sendCode');
+    $router->post('/password-reset', 'AuthController@generateResetHash');
+    $router->post('/new-password', 'AuthController@newPassword');
 
 
     
@@ -37,7 +39,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 
         $router->group(['middleware' => 'verified'], function () use ($router) {
-            $router->get('/password-reset', 'AuthController@password_reset');
 
             $router->post('/profile-change', 'AuthController@profile_change');
             $router->get('/profile-change', 'AuthController@get_profile');

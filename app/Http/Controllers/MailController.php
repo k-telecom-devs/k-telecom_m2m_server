@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\SMTP;
 
 class MailController extends Controller
 {
-    public function code(Request $request): JsonResponse
+    public function sendCode(Request $request, string $message, int $code): JsonResponse
     {
         $mail = new PHPMailer(true);
 
@@ -27,9 +27,7 @@ class MailController extends Controller
         $mail->isHTML(true);
         $mail->Subject = 'K-telecom message';
 
-
-        $code = rand(100000,999999);
-        $mail->Body = $code;
+        $mail->Body = $code." ". $message;
         try{
             if ($mail->send()){
             return response()->json(['message' => 'Mail send', 'code'=> hash('md5', $code)]);

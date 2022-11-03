@@ -94,7 +94,7 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        auth()->factory()->setTTL(3000);
+        auth()->factory()->setTTL(43200); 
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);

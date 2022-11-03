@@ -37,6 +37,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 
         $router->group(['middleware' => 'verified'], function () use ($router) {
+            $router->get('/password-reset', 'AuthController@password_reset');
 
             $router->post('/profile-change', 'AuthController@profile_change');
             $router->get('/profile-change', 'AuthController@get_profile');

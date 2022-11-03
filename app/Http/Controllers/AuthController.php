@@ -150,4 +150,27 @@ class AuthController extends Controller
         auth()->factory()->setTTL(1);
         return response()->json(['token' => auth()->fromUser(auth()->user())]);
     }
+
+
+    public function password_reset(Request $request): JsonResponse
+    {
+        $u = auth()->user();
+    
+        $user = User::find($u['id']);
+        $password = $request->password;
+        if(!empty($password) && $user){
+            $user->email_verified = false;
+            $user->password = app('hash')->make($request->password);
+            if($user->save()){
+                return response()->json(['message' => 'Success']);
+            }
+            else{
+                return response()->json(['message' => 'Something gone wrong']);
+            }
+        }
+        else{
+            return response()->json(['message' => "Password is empty or user don't found"]);
+        }
+    }
 }
+

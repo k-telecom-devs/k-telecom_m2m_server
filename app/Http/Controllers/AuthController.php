@@ -73,9 +73,6 @@ class AuthController extends Controller
             else{
                 return response()->json(['message' => "Can't find user"]);
             }
-
-
-        return response()->json(['message' => 'Successfully logged out']);
     }
     catch (\Exception $e) {
 

@@ -36,6 +36,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/logout', 'AuthController@logout');
         $router->post('/refresh', 'AuthController@refreshToken');        
         $router->get('/confirm', 'AuthController@confirm');
+        $router->get('/confirmMail', 'AuthController@confirmMail');
 
 
         $router->group(['middleware' => 'verified'], function () use ($router) {

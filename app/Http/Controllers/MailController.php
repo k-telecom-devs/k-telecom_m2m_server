@@ -44,7 +44,7 @@ class MailController extends Controller
     }
 
     //Отдельная функция для отправки письма с любым view
-    public function sendMail(string $user_email, string $content, string $subject): JsonResponse
+    public function sendMail(string $user_email, string $content, string $subject)
     {
         $mail = new PHPMailer(true);
 
@@ -65,10 +65,10 @@ class MailController extends Controller
         $mail->Body = $content;
         try{
         if ($mail->send()){
-            return response()->json(['message' => 'Mail send']);
+            return true;
         }
         else{
-            return response()->json(['message' => 'Something gone wrong']);
+            return false;
         }
         }
 

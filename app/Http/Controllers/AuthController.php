@@ -38,6 +38,7 @@ class AuthController extends Controller
             $user->email = $request->email;
             $user->password = app('hash')->make($request->password);
             $user->phone_number = $phone_number;
+            $user->user_hash = hash('sha512',$name.$email.$phone_number);
 
             if ($user->save()) {
                 return $this->login($request);
@@ -54,31 +55,6 @@ class AuthController extends Controller
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
-    }
-
-    public function confirm(): JsonResponse
-    {
-        try{
-            $u = auth()->user();
-    
-            $user = User::find($u['id']);
-            if($user){
-                $user->email_verified = true;
-                if ($user->save()){
-                    return response()->json(['message' => 'Successfully confirm']);
-                }
-                else{
-                    return response()->json(['message' => 'Somthing gone wrong']);
-                }
-            }
-            else{
-                return response()->json(['message' => "Can't find user"]);
-            }
-    }
-    catch (\Exception $e) {
-
-        return response()->json(['message' => $e->getMessage()]);
-    }
     }
 
     public function login(Request $request): JsonResponse
@@ -196,6 +172,49 @@ class AuthController extends Controller
         else{
             return response()->json(['message' => "Wrong code"]);
         }
+    }
+
+    public function confirm(Request $request): JsonResponse
+    {
+        try{
+            $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715);
+            if($user){
+                $user->email_verified = true;
+                if ($user->save()){
+                    return response()->json(['message' => 'Successfully confirm']);
+                }
+                else{
+                    return response()->json(['message' => 'Somthing gone wrong']);
+                }
+            }
+            else{
+                return response()->json(['message' => "Can't find user"]);
+            }
+    }
+    catch (\Exception $e) {
+
+        return response()->json(['message' => $e->getMessage()]);
+    }
+    }
+
+    public function confirmMail(): JsonResponse
+    {
+        try{
+            $u = auth()->user();
+    
+            $user = User::find($u['id']);
+            $newMail = new MailController;
+            if($newMail::sendMail($user->email,'Follow this link '.env('SERVER_URL').'/api/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'K-telecom virfi mail')){
+            return response()->json(['message' => "mail send"]);
+            }
+            else{
+                return response()->json(['message' => "Smth gone wrong"]);
+            }
+    }
+    catch (\Exception $e) {
+
+        return response()->json(['message' => $e->getMessage()]);
+    }
     }
 }
 

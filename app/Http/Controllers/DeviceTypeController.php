@@ -25,4 +25,9 @@ class DeviceTypeController extends Controller
         else
             return response()->json(['message' => 'Something wrong.']);
     }
+
+    public function index(Request $request): JsonResponse
+    {
+        return response()->json(['message' => DeviceType::all()]);
+    }
 }

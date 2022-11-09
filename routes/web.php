@@ -57,7 +57,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->post('/station-settings', 'StationSettingsController@edit');
 
             $router->post('/version', 'VersionController@create');
-            $router->get('/version', 'VersionController@index');
+            $router->get('/version', 'VersionController@index');      
 
             $router->get('/sensor', 'SensorController@index');
             $router->post('/sensor', 'SensorController@create');
@@ -66,6 +66,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->post('/sensor-settings', 'SensorSettingsController@edit');
 
             $router->post('/device-type', 'DeviceTypeController@create');
+            $router->get('/device-type', 'DeviceTypeController@index');
 
             $router->post('/city', 'CityController@store');
             $router->get('/city', 'CityController@index');

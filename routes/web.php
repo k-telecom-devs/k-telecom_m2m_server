@@ -16,6 +16,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+$router->get('/confirm', 'AuthController@confirm');
+$router->post('/new-password', 'AuthController@newPassword');
 
 
 $router->group(['prefix' => 'api'], function () use ($router) {
@@ -28,14 +30,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->post('/mail', 'MailController@sendCode');
     $router->post('/password-reset', 'AuthController@generateResetHash');
-    $router->post('/new-password', 'AuthController@newPassword');
 
 
     
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('/logout', 'AuthController@logout');
         $router->post('/refresh', 'AuthController@refreshToken');        
-        $router->get('/confirm', 'AuthController@confirm');
         $router->get('/confirmMail', 'AuthController@confirmMail');
 
 

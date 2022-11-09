@@ -40,7 +40,10 @@ class AuthController extends Controller
             $user->phone_number = $phone_number;
             $user->user_hash = hash('sha512',$name.$email.$phone_number);
 
+
             if ($user->save()) {
+                $newMail = new MailController;
+                $newMail::sendMail($request->email,'Follow this link '.env('SERVER_URL').'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'K-telecom virfi mail');
                 return $this->login($request);
             }
         } catch (\Exception $e) {
@@ -133,24 +136,23 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->email)->first();
         if (!$user){
-            return response()->json(['message' => "Can't find user. Wrong email"]);
+            return response()->json(['message' => "Can't find user with this email"]);
         }
         $code = rand(100000,999999);
-        if($user->name == $request->name){
-            $newCode = new MailController;
-            $newCode::sendCode($request, "send your code here\n".env('SERVER_URL').'/api/new-password ', $code);
-            $user->password_reset_hash = hash('sha512', $code);
-            if($user->save()){
+        $newCode = new MailController;
+        $newCode::sendCode($request, "send your code here\n".env('SERVER_URL').'/new-password ', $code);
+        $user->password_reset_hash = hash('sha512', $code);
+        if($user->save()){
+            return response()->json(['message' => 'Mail send, hash generate']);            
                 return response()->json(['message' => 'Mail send, hash generate']);
-            }
-            else{
-                return response()->json(['message' => 'Something gone wrong']);
-            }
+            return response()->json(['message' => 'Mail send, hash generate']);            
         }
         else{
-            return response()->json(['message' => "User with this email have other name"]);
+            return response()->json(['message' => 'Something gone wrong']);
         }
     }
+
+    
 
     public function newPassword(Request $request): JsonResponse
     {
@@ -177,7 +179,7 @@ class AuthController extends Controller
     public function confirm(Request $request): JsonResponse
     {
         try{
-            $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715);
+            $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715)->first();
             if($user){
                 $user->email_verified = true;
                 if ($user->save()){
@@ -189,26 +191,6 @@ class AuthController extends Controller
             }
             else{
                 return response()->json(['message' => "Can't find user"]);
-            }
-    }
-    catch (\Exception $e) {
-
-        return response()->json(['message' => $e->getMessage()]);
-    }
-    }
-
-    public function confirmMail(): JsonResponse
-    {
-        try{
-            $u = auth()->user();
-    
-            $user = User::find($u['id']);
-            $newMail = new MailController;
-            if($newMail::sendMail($user->email,'Follow this link '.env('SERVER_URL').'/api/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'K-telecom virfi mail')){
-            return response()->json(['message' => "mail send"]);
-            }
-            else{
-                return response()->json(['message' => "Smth gone wrong"]);
             }
     }
     catch (\Exception $e) {

@@ -20,9 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->timestamps();
             $table->unsignedBigInteger('phone_number')->unique();
-            $table->boolean('notifications')->default(0);
-            $table->boolean('auto_update')->default(0);
-            $table->boolean('auto_pay')->default(0);
+            $table->boolean('notifications')->default(false);
+            $table->boolean('auto_update')->default(false);
+            $table->boolean('auto_pay')->default(false);
         });
     }
     /**

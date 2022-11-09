@@ -85,7 +85,7 @@ class AuthController extends Controller
 
         $user = User::find($u['id']);
 
-        //Проверка на bool. MySQL - глупый и мог принять значение >1
+        //Проверка на bool. MySQL - глупый и мог принять значение >1 || <0
         if ($request->notifications != 1 && $request->notifications != 0){
             return response()->json(['message' => 'notifications can be only 1(true) or 0(false)']);
         }

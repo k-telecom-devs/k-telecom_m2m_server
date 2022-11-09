@@ -85,12 +85,26 @@ class AuthController extends Controller
 
         $user = User::find($u['id']);
 
+        //Проверка на bool. MySQL - глупый и мог принять значение >1
+        if ($request->notifications != 1 || $request->notifications != 0){
+            return response()->json(['message' => 'notifications can be only 1(true) or 0(false)']);
+        }
+        if ($request->auto_update != 1 || $request->auto_update != 0){
+            return response()->json(['message' => 'auto_update can be only 1(true) or 0(false)']);
+        }
+        if ($request->auto_pay != 1 || $request->auto_pay != 0){
+            return response()->json(['message' => 'auto_pay can be only 1(true) or 0(false)']);
+        }
+
+
         $user->phone_number = $request->phone_number;
         $user->notifications = $request->notifications;
         $user->auto_update = $request->auto_update;
         $user->auto_pay = $request->auto_pay;
         $user->email = $request->email;
         $user->name = $request->name;
+        $user->user_hash = hash('sha512',$user['name'].$user['email'].$user['phone_number']);
+
 
         if ($user->save()){
             return response()->json(['message' => 'Data updated successfully']);

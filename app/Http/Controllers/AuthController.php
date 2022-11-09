@@ -143,9 +143,7 @@ class AuthController extends Controller
         $newCode::sendCode($request, "send your code here\n".env('SERVER_URL').'/new-password ', $code);
         $user->password_reset_hash = hash('sha512', $code);
         if($user->save()){
-            return response()->json(['message' => 'Mail send, hash generate']);            
-                return response()->json(['message' => 'Mail send, hash generate']);
-            return response()->json(['message' => 'Mail send, hash generate']);            
+            return response()->json(['message' => 'Mail send, hash generate']);                      
         }
         else{
             return response()->json(['message' => 'Something gone wrong']);

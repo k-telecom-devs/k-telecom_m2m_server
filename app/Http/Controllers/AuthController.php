@@ -73,7 +73,7 @@ class AuthController extends Controller
 
         auth()->factory()->setTTL(43200); 
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials, true)) { 
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         return $this->respondWithToken($token);
@@ -97,17 +97,23 @@ class AuthController extends Controller
         }
 
 
+
         $user->phone_number = $request->phone_number;
         $user->notifications = $request->notifications;
         $user->auto_update = $request->auto_update;
         $user->auto_pay = $request->auto_pay;
         $user->email = $request->email;
+        $user->password = app('hash')->make($request->password);
         $user->name = $request->name;
         $user->user_hash = hash('sha512',$user['name'].$user['email'].$user['phone_number']);
 
 
         if ($user->save()){
-            return response()->json(['message' => 'Data updated successfully']);
+            $credentials = request(['email', 'password']);
+            if (!$token = auth()->attempt($credentials, true)) { 
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            return $this->respondWithToken($token);
         } else {
             return response()->json(['message' => 'Something gone wrong']);
         }

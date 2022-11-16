@@ -32,7 +32,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/password-reset', 'AuthController@generateResetHash');
 
     $router->get('/api-version', function () use ($router) {
-        return ('0.9.0');
+        return env('APP_VERSION');
     });
 
     

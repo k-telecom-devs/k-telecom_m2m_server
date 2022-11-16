@@ -69,6 +69,11 @@ class SensorController extends Controller
         $sensor = new Sensor();
         $sensor_settings = new SensorSettings();
         $version = Version::find($request->version_id);
+        $station = Station::find($request->station_id);
+
+        if(!$station){
+            return response()->json(['message' => 'No station with this id']);
+        }
 
         if (!$version) {
             return response()->json(['message' => 'No version with this id']);

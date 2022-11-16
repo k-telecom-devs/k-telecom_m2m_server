@@ -10,6 +10,7 @@ use App\Models\DeviceType;
 use App\Models\Version;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Station;
 
 class SensorSettingsController extends Controller
 {
@@ -40,9 +41,16 @@ class SensorSettingsController extends Controller
         ]);
 
         try {
+
             $sensor = Sensor::find($request->sensor_id);
             if(!$sensor){
                 return response()->json(['message' => 'No sensor with this id']);
+            }
+
+            $station = Station::find($request->station_id);
+
+            if(!$station){
+                return response()->json(['message' => 'No station with this id']);
             }
 
             $sensor_settings = SensorSettings::where(['sensor_id' => $request->sensor_id])->first();

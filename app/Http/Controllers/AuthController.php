@@ -97,24 +97,33 @@ class AuthController extends Controller
         }
 
 
-
-        $user->phone_number = $request->phone_number;
-        $user->notifications = $request->notifications;
-        $user->auto_update = $request->auto_update;
-        $user->auto_pay = $request->auto_pay;
-        $user->email = $request->email;
-        $user->password = app('hash')->make($request->password);
-        $user->name = $request->name;
+        if (!empty($request->phone_number)){
+            $user->phone_number = $request->phone_number;
+        }
+        if (!empty($request->notifications)){
+            $user->notifications = $request->notifications;
+        }
+        if (!empty($request->auto_update)){
+            $user->auto_update = $request->auto_update;
+        }
+        if (!empty($request->auto_pay)){
+            $user->auto_pay = $request->auto_pay;
+        }
+        if (!empty($request->email)){
+            $user->email = $request->email;
+        }
+        if (!empty($request->password)){
+            $user->password = app('hash')->make($request->password);
+        }
+        if (!empty($request->name)){
+            $user->name = $request->name;
+        }
         $user->user_hash = hash('sha512',$user['name'].$user['email'].$user['phone_number']);
 
 
         if ($user->save()){
-            $credentials = request(['email', 'password']);
-            auth()->factory()->setTTL(43200);
-            if (!$token = auth()->attempt($credentials)) { 
-                return response()->json(['error' => 'Unauthorized'], 401);
-            }
-            return $this->respondWithToken($token);
+            
+            return response()->json(['message' => 'Done!']);
         } else {
             return response()->json(['message' => 'Something gone wrong']);
         }

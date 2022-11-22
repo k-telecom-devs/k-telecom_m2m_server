@@ -173,61 +173,29 @@ class AuthController extends Controller
         if (!$user){
             return response()->json(['message' => "Can't find user with this email"]);
         }
-        $code = rand(100000,999999);
         $newCode = new MailController;
-        $newCode::sendMail($request->email, env('SERVER_URL').'/new-password?c13367945d5d4c91047b3b50234aa7ab='.hash('sha512', $code).'&fbcc689837324a00d4aa9365a7458715='.$user['user_hash'], 'Password change');
-        $user->password_reset_hash = hash('sha512', $code);
+        $newCode::sendMail($request->email, 'Follow this link if you want to reset password.<br>'.env('SERVER_URL').'/new-password?fbcc689837324a00d4aa9365a7458715='.$user['user_hash'], 'Password change');
         if($user->save()){
-            return response()->json(['message' => 'Mail send, hash generate, code='.$code]);                      
+            return response()->json(['message' => 'Mail send']);                      
         }
         else{
             return response()->json(['message' => 'Something gone wrong']);
         }
     }
 
-    
-
-    public function newPasswordCheck(Request $request)
+    public function newPassword(Request $request)
     {
         $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715)->first();
-        if (!$user){
-            return response()->json(['message' => "Can't find user. Wrong email"]);
-        }
-        if($user->password_reset_hash == $request->c13367945d5d4c91047b3b50234aa7ab){
-            return view('password-reset');
-            /*$user->password = app('hash')->make($request->password);
-            $user->password_reset_hash = null;
-            if($user->save()){
-            return response()->json(['message' => "Password change"]);
-            }
-            else{
-                return response()->json(['message' => "Something gone wrong"]);
-            }*/
-        }
-        else{
-            return "Smt gone wrong";
-        }
+        $defaultPassword = rand(1000000000,9999999999);
+        $mail = new MailController;
+        $mail::sendMail($user['email'], 'Your new password is.<br>'.$defaultPassword.'<br> We advise you to change it as soon as possible', 'Password change');
+        $user->password = app('hash')->make($defaultPassword);
+        $user->password_reset_hash = null;
+        if($user->save()){
+        return response()->json(['message' => $defaultPassword]);
     }
-
-    public function newPassword(Request $request): JsonResponse
-    {
-        $user = User::where('id', $request->user_id)->first();
-        $codeHash = $request->code;
-        if (!$user){
-            return response()->json(['message' => "Can't find user. Wrong email"]);
-        }
-        if($user->password_reset_hash == $codeHash){
-            $user->password = app('hash')->make($request->password);
-            $user->password_reset_hash = null;
-            if($user->save()){
-            return response()->json(['message' => "Password change"]);
-            }
-            else{
-                return response()->json(['message' => "Something gone wrong"]);
-            }
-        }
         else{
-            return response()->json(['message' => "Wrong code"]);
+            return response()->json(['message' => "Something gone wrong"]);
         }
     }
 

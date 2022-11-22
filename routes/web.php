@@ -18,11 +18,10 @@ $router->get('/', function () use ($router) {
 });
 
 $router->get('/confirm', 'AuthController@confirm');
-$router->get('/new-password', 'AuthController@newPasswordCheck');
+$router->get('/new-password', 'AuthController@newPassword');
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     
-    $router->post('/new-password', 'AuthController@newPassword');
     $router->post('/register', 'AuthController@register');
     $router->post('/login', 'AuthController@login');
 

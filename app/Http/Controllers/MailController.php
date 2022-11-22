@@ -65,7 +65,7 @@ class MailController extends Controller
         $mail->Body = $content;
         try{
         if ($mail->send()){
-            return true;
+            return $mail->$content;
         }
         else{
             return false;

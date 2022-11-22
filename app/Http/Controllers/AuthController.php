@@ -43,7 +43,7 @@ class AuthController extends Controller
 
             if ($user->save()) {
                 $newMail = new MailController();
-                if($newMail->sendMail($request->email,'Follow this link '.env('SERVER_URL').'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'K-telecom virfi mail')==true)
+                if($newMail->sendMail($request->email,'Перейдите по ссылке '.env('SERVER_URL').'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'К-Телеком верефикационное письмо')==true)
                 {
                     return $this->login($request);
                 }
@@ -141,6 +141,13 @@ class AuthController extends Controller
 
     public function get_profile(): JsonResponse
     {
+        $user = auth()->user();
+        $date = (new \DateTime())->modify('-24 hours');
+        $created_time = strtotime($user['created_at']);
+        $created_time = date('d-m-Y h:i:s');
+        
+        return response()->json(['message' => ($created_time<$date)]);
+        //return response()->json(['message' => $date]);
         return response()->json(['message' => auth()->user()]);
     }
 
@@ -174,7 +181,7 @@ class AuthController extends Controller
             return response()->json(['message' => "Can't find user with this email"]);
         }
         $newCode = new MailController;
-        $newCode::sendMail($request->email, 'Follow this link if you want to reset password.<br>'.env('SERVER_URL').'/new-password?fbcc689837324a00d4aa9365a7458715='.$user['user_hash'], 'Password change');
+        $newCode::sendMail($request->email, 'Перейдите по этой ссылке, если хотите поменять пароль.<br>'.env('SERVER_URL').'/new-password?fbcc689837324a00d4aa9365a7458715='.$user['user_hash'], 'Изменение пароля');
         if($user->save()){
             return response()->json(['message' => 'Mail send']);                      
         }
@@ -188,7 +195,7 @@ class AuthController extends Controller
         $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715)->first();
         $defaultPassword = rand(1000000000,9999999999);
         $mail = new MailController;
-        $mail::sendMail($user['email'], 'Your new password is.<br>'.$defaultPassword.'<br> We advise you to change it as soon as possible', 'Password change');
+        $mail::sendMail($user['email'], 'Ваш новый пароль.<br>'.$defaultPassword.'<br> В целях безопасности, мы рекомендуем изменить его как можно быстрее', 'Password change');
         $user->password = app('hash')->make($defaultPassword);
         $user->password_reset_hash = null;
         if($user->save()){

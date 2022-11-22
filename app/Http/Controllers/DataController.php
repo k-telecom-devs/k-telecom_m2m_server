@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Data;
 use App\Models\Sensor;
+use App\Models\Station;
+use App\Models\User;
+use App\Models\SensorSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -12,7 +15,7 @@ class DataController extends Controller
     public function index()
     {
         $user = auth()->user();
-        return Data::all()->where('user_id', $user['id']);
+        return Data::all()->where('user_id', $user['id'])->first();
     }
 
     public function store(Request $request): JsonResponse
@@ -24,16 +27,21 @@ class DataController extends Controller
             'charge' => 'required',
         ]);
 
+        $sensor = Sensor::where(['mac' => $request->mac])->first();
+        $sensor_settings = SensorSettings::where(['sensor_id' => $sensor->id])->first();
+        if(!$sensor){
+            return response()->json(['message' => 'No sensor with this mac']);
+        }
+        $station = Station::find($sensor->station_id);
+        $user = User::find($station->user_id);
         try {
-
-            $sensor = Sensor::where(['mac' => $request->mac])->first();
-            if(!$sensor){
-                return response()->json(['message' => 'No sensor with this mac']);
-            }
 
             $data = new Data();
             $data->value = $request->value;
-
+            if($request->value < $sensor_settings->min_trigger || $request->value > $sensor_settings->max_trigger){
+                MailController::sendMail($user->email, 'Проверьте датчик с именем'.$sensor_settings->name.'. Он отправил '.$request->value,'Уведомление сенсора!');
+                return response()->json(['message' => 'Mail send']);
+            }
             $data->sensor_id = $sensor->id;
             $sensor->uptime = $request->uptime;
             $sensor->charge = $request->charge;

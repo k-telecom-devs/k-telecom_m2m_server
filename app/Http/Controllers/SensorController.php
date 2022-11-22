@@ -65,7 +65,7 @@ class SensorController extends Controller
             'min_trigger' => 'required',
             'max_trigger' => 'required',
         ]);
-
+        $user = auth()->user();
         $sensor = new Sensor();
         $sensor_settings = new SensorSettings();
         $version = Version::find($request->version_id);
@@ -103,7 +103,9 @@ class SensorController extends Controller
         if($created_subgroup->group_id != $request->group_id){
             return response()->json(['message' => 'Subgroup does not belong to the group']);
         }
-
+        if( $station->user_id != $user['id']){
+            return response()->json(['message' => 'Station does not belong to this user']);
+        }
         try {
             if ($version->device_type_id == $request->device_type_id) {
                 $sensor_settings->version_id = $request->version_id;

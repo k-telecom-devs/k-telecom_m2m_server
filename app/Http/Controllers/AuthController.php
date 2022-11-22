@@ -212,7 +212,7 @@ class AuthController extends Controller
     public function newPassword(Request $request): JsonResponse
     {
         $user = User::where('id', $request->user_id)->first();
-        $codeHash = hash('sha512', $request->code);
+        $codeHash = $request->code;
         if (!$user){
             return response()->json(['message' => "Can't find user. Wrong email"]);
         }

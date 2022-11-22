@@ -91,7 +91,7 @@ class StationController extends Controller
             }
 
             if ($station_settings->save()) {
-                return response()->json(['message' => 'Station created successfully.']);
+                return response()->json(['message' => $station]);
             } else {
                 $station->delete();
                 $station_settings->delete();

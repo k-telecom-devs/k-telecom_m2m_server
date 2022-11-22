@@ -337,7 +337,7 @@ POST /api/sensor-settings
 ## **Удалить датчик**
 Удалить датчик по его mac 
 ```
-DELETE /api/sensor-settings
+DELETE /api/sensor  
     mac:(mac датчика, который будет удален),
 ```
 **Возвращает**
@@ -366,9 +366,9 @@ POST /api/station
 <br>
 
 ## **Удалить станции**
-Удалить датчик по его mac 
+Удалить станции по его mac 
 ```
-DELETE /api/sensor-settings
+DELETE /api/station
     mac:(mac станции, который будет удален),
 ```
 **Возвращает**

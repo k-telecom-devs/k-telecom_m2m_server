@@ -170,10 +170,10 @@ class AuthController extends Controller
         }
         $code = rand(100000,999999);
         $newCode = new MailController;
-        $newCode::sendCode($request, "send your code here\n".env('SERVER_URL').'/new-password ', $code);
+        $newCode::sendMail($request->email, env('SERVER_URL').'/new-password?c13367945d5d4c91047b3b50234aa7ab='.hash('sha512', $code).'&fbcc689837324a00d4aa9365a7458715='.$user['user_hash'], 'Password change');
         $user->password_reset_hash = hash('sha512', $code);
         if($user->save()){
-            return response()->json(['message' => 'Mail send, hash generate']);                      
+            return response()->json(['message' => 'Mail send, hash generate, code='.$code]);                      
         }
         else{
             return response()->json(['message' => 'Something gone wrong']);
@@ -182,9 +182,31 @@ class AuthController extends Controller
 
     
 
+    public function newPasswordCheck(Request $request): JsonResponse
+    {
+        $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715)->first();
+        if (!$user){
+            return response()->json(['message' => "Can't find user. Wrong email"]);
+        }
+        if($user->password_reset_hash == $request->c13367945d5d4c91047b3b50234aa7ab){
+            return view('password_reset');
+            /*$user->password = app('hash')->make($request->password);
+            $user->password_reset_hash = null;
+            if($user->save()){
+            return response()->json(['message' => "Password change"]);
+            }
+            else{
+                return response()->json(['message' => "Something gone wrong"]);
+            }*/
+        }
+        else{
+            return response()->json(['message' => "Wrong code"]);
+        }
+    }
+
     public function newPassword(Request $request): JsonResponse
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('id', $request->user_id)->first();
         $codeHash = hash('sha512', $request->code);
         if (!$user){
             return response()->json(['message' => "Can't find user. Wrong email"]);

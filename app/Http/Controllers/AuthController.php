@@ -42,9 +42,14 @@ class AuthController extends Controller
 
 
             if ($user->save()) {
-                $newMail = new MailController;
-                $newMail::sendMail($request->email,'Follow this link '.env('SERVER_URL').'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'K-telecom virfi mail');
-                return $this->login($request);
+                $newMail = new MailController();
+                if($newMail->sendMail($request->email,'Follow this link '.env('SERVER_URL').'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'K-telecom virfi mail')==true)
+                {
+                    return $this->login($request);
+                }
+                else{
+                    return'Somthing gone wrong';
+                }
             }
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
@@ -182,14 +187,14 @@ class AuthController extends Controller
 
     
 
-    public function newPasswordCheck(Request $request): JsonResponse
+    public function newPasswordCheck(Request $request)
     {
         $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715)->first();
         if (!$user){
             return response()->json(['message' => "Can't find user. Wrong email"]);
         }
         if($user->password_reset_hash == $request->c13367945d5d4c91047b3b50234aa7ab){
-            return view('password_reset');
+            return view('password-reset');
             /*$user->password = app('hash')->make($request->password);
             $user->password_reset_hash = null;
             if($user->save()){
@@ -200,7 +205,7 @@ class AuthController extends Controller
             }*/
         }
         else{
-            return response()->json(['message' => "Wrong code"]);
+            return "Smt gone wrong";
         }
     }
 

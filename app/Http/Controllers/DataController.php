@@ -40,7 +40,6 @@ class DataController extends Controller
             $data->value = $request->value;
             if($request->value < $sensor_settings->min_trigger || $request->value > $sensor_settings->max_trigger){
                 MailController::sendMail($user->email, 'Проверьте датчик с именем'.$sensor_settings->name.'. Он отправил '.$request->value,'Уведомление сенсора!');
-                return response()->json(['message' => 'Mail send']);
             }
             $data->sensor_id = $sensor->id;
             $sensor->uptime = $request->uptime;

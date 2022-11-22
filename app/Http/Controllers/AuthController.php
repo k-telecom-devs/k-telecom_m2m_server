@@ -141,13 +141,6 @@ class AuthController extends Controller
 
     public function get_profile(): JsonResponse
     {
-        $user = auth()->user();
-        $date = (new \DateTime())->modify('-24 hours');
-        $created_time = strtotime($user['created_at']);
-        $created_time = date('d-m-Y h:i:s');
-        
-        return response()->json(['message' => ($created_time<$date)]);
-        //return response()->json(['message' => $date]);
         return response()->json(['message' => auth()->user()]);
     }
 

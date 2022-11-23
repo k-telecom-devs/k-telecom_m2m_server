@@ -43,7 +43,7 @@ class AuthController extends Controller
 
             if ($user->save()) {
                 $newMail = new MailController();
-                if($newMail->sendMail($request->email,'Перейдите по ссылке '.env('SERVER_URL').'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'К-Телеком верефикационное письмо')==true)
+                if($newMail->sendMail($request->email,'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'К-Телеком верефикационное письмо')==true)
                 {
                     return $this->login($request);
                 }
@@ -174,7 +174,7 @@ class AuthController extends Controller
             return response()->json(['message' => "Can't find user with this email"]);
         }
         $newCode = new MailController;
-        $newCode::sendMail($request->email, 'Перейдите по этой ссылке, если хотите поменять пароль.<br>'.env('SERVER_URL').'/new-password?fbcc689837324a00d4aa9365a7458715='.$user['user_hash'], 'Изменение пароля');
+        $newCode::sendMail($request->email, 'Перейдите по этой ссылке, если хотите поменять пароль.<br>'.$_SERVER['SERVER_NAME'].'/new-password?fbcc689837324a00d4aa9365a7458715='.$user['user_hash'], 'Изменение пароля');
         if($user->save()){
             return response()->json(['message' => 'Mail send']);                      
         }

@@ -6,6 +6,7 @@ use App\Models\Data;
 use App\Models\Sensor;
 use App\Models\Station;
 use App\Models\User;
+use App\Models\DailyStat;
 use App\Models\SensorSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,18 +35,42 @@ class DataController extends Controller
         }
         $station = Station::find($sensor->station_id);
         $user = User::find($station->user_id);
-        try {
+        $data = new Data();
+        $data->value = $request->value;
+        //Смотрим время отправки данных и дня сбора статистики
+        
+        $dailyStats = DailyStat::where('sensor_id',$sensor->id)->get()->last();
+        if(!$dailyStats){
+            $dailyStats = new DailyStat();
+            $dailyStats->sensor_id = $sensor->id;
+        }
+        $dateStats = strtotime($dailyStats->created_at);
+        $dateStats = date('y-m-d');
+        $dateData = strtotime($data->created_at);
+        $dateData = date('y-m-d');
 
-            $data = new Data();
-            $data->value = $request->value;
+        //Если они не совпадают, делаем новый день сбора статистики
+        if($dateData!=$dateStats)
+        {
+            $dailyStats = new DailyStat();
+            $dailyStats->sensor_id = $sensor->id;
+        }
+
+        try {
+            //отправляем письмо на почту, если данные превышают выставленную норму
             if($request->value < $sensor_settings->min_trigger || $request->value > $sensor_settings->max_trigger){
                 MailController::sendMail($user->email, 'Проверьте датчик с именем'.$sensor_settings->name.'. Он отправил '.$request->value,'Уведомление сенсора!');
             }
+
             $data->sensor_id = $sensor->id;
             $sensor->uptime = $request->uptime;
             $sensor->charge = $request->charge;
 
-            if ($data->save() && $sensor->save()) {
+            $dailyStats->measurements_number = $dailyStats->measurements_number+1;
+            $dailyStats->average = ($dailyStats->average*($dailyStats->measurements_number-1)+$request->value)/$dailyStats->measurements_number;
+
+            //сохраняем все
+            if ($data->save() && $sensor->save() && $dailyStats->save()) {
                 return response()->json(['message' => 'Data created successfully, sensor updated']);
             }
             else {

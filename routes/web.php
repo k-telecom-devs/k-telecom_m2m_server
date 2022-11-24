@@ -72,6 +72,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             $router->post('/city', 'CityController@store');
             $router->get('/city', 'CityController@index');
+
+            $router->get('/daily-stat', 'StatController@dailyStat');
+            $router->get('/monthly-stat', 'StatController@MonthlyStat');
         });
     });
 });

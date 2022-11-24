@@ -9,7 +9,7 @@ use App\Http\Controllers\MailController;
 
 class AuthController extends Controller
 {
-    public function register(Request $request): string
+    public function register(Request $request): JsonResponse
     {
         $name = $request->name;
         $email = $request->email;
@@ -49,7 +49,7 @@ class AuthController extends Controller
                     return $this->login($request);
                 }
                 else{
-                    return'Somthing gone wrong';
+                    return response()->json(['Something gone wrong']);
                 }
             }
         } catch (\Exception $e) {

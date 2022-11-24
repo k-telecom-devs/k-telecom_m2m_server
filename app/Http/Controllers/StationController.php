@@ -26,7 +26,9 @@ class StationController extends Controller
         if ($station){
             if($station->user_id == $user['id']){
                 $station_settings = StationSettings::where('station_id', $station->id)->first();
-                $station_settings->delete();
+                if($station_settings){
+                    $station_settings->delete();
+                }
                 $station->delete();
                 return response()->json(['message' => 'Delete successfully']);
             }

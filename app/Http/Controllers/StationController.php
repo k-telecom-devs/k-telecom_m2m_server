@@ -23,19 +23,18 @@ class StationController extends Controller
         $user = auth()->user();
 
         $station = Station::where('mac', $request->mac)->first();
-        if ($station){
-            if($station->user_id == $user['id']){
+
+        if ($station) {
+            if ($station->user_id == $user['id']) {
                 $station_settings = StationSettings::where('station_id', $station->id)->first();
                 $station_settings->delete();
                 $station->delete();
                 return response()->json(['message' => 'Delete successfully']);
-            }
-            else{
+            } else {
                 return response()->json(['message' => "Station don't belongs to this user"]);
             }
-        }
-        else{
-        return response()->json(['message' => "Can't find mac"]);
+        } else {
+            return response()->json(['message' => "Can't find mac"]);
         }
     }
 
@@ -53,22 +52,21 @@ class StationController extends Controller
         $station_settings = new StationSettings();
 
         $version = Version::find($request->version_id);
-        if(! $version){
+        if (!$version) {
             return response()->json(['message' => 'No version with this id']);
         }
 
         $version_device_type = DeviceType::find($version->device_type_id);
         $real_device_type = DeviceType::find($request->device_type_id);
-        if(!$real_device_type){
+        if (!$real_device_type) {
             return response()->json(['message' => 'No device type with this id']);
         }
 
         $created_station = Station::where('mac', $request->mac)->get();
 
-        if(isset($created_station[0])){
-            return response()->json(['message' => 'This station alredy exists'. $created_station]);
+        if (isset($created_station[0])) {
+            return response()->json(['message' => 'This station alredy exists' . $created_station]);
         }
-
 
 
         try {
@@ -84,7 +82,7 @@ class StationController extends Controller
             $station->user_id = $user['id'];
             $station->device_type_id = $request->device_type_id;
 
-            if($station->save()){
+            if ($station->save()) {
                 $station_settings->name = $request->name;
                 $station_settings->station_id = $station->id;
                 $station_settings->version_id = $request->version_id;
@@ -97,7 +95,6 @@ class StationController extends Controller
                 $station_settings->delete();
                 return response()->json(['message' => 'Something gone wrong']);
             }
-
 
 
         } catch (\Exception $e) {

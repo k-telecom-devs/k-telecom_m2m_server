@@ -31,20 +31,19 @@ class SensorController extends Controller
         $user = auth()->user();
 
         $sensor = Sensor::where('mac', $request->mac)->first();
-        if ($sensor){
+
+        if ($sensor) {
             $station = Station::where('id', $sensor->station_id)->first();
-            if($user['id'] == $station->user_id){
-            $sensor_settings = SensorSettings::where('sensor_id', $sensor->id)->first();
-            $sensor_settings->delete();
-            $sensor->delete();
-            return response()->json(['message' => 'Delete successfully']);
-            }
-            else{
+            if ($user['id'] == $station->user_id) {
+                $sensor_settings = SensorSettings::where('sensor_id', $sensor->id)->first();
+                $sensor_settings->delete();
+                $sensor->delete();
+                return response()->json(['message' => 'Delete successfully']);
+            } else {
                 return response()->json(['message' => "Sensor don't belongs to this user"]);
             }
-        }
-        else{
-        return response()->json(['message' => "Can't find mac"]);
+        } else {
+            return response()->json(['message' => "Can't find mac"]);
         }
     }
 
@@ -71,7 +70,7 @@ class SensorController extends Controller
         $version = Version::find($request->version_id);
         $station = Station::find($request->station_id);
 
-        if(!$station){
+        if (!$station) {
             return response()->json(['message' => 'No station with this id']);
         }
 
@@ -81,7 +80,7 @@ class SensorController extends Controller
 
         $version_device_type = DeviceType::find($version->device_type_id);
         $real_device_type = DeviceType::find($request->device_type_id);
-        if (!$real_device_type){
+        if (!$real_device_type) {
             return response()->json(['message' => 'No device type with this id']);
         }
 
@@ -92,18 +91,18 @@ class SensorController extends Controller
         }
 
         $created_group = Group::find($request->group_id);
-        if (!$created_group){
+        if (!$created_group) {
             return response()->json(['message' => 'No group with this id']);
         }
 
         $created_subgroup = Subgroup::find($request->subgroup_id);
-        if (!$created_subgroup){
+        if (!$created_subgroup) {
             return response()->json(['message' => 'No subgroup with this id']);
         }
-        if($created_subgroup->group_id != $request->group_id){
+        if ($created_subgroup->group_id != $request->group_id) {
             return response()->json(['message' => 'Subgroup does not belong to the group']);
         }
-        if( $station->user_id != $user['id']){
+        if ($station->user_id != $user['id']) {
             return response()->json(['message' => 'Station does not belong to this user']);
         }
         try {

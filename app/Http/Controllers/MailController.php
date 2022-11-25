@@ -16,9 +16,9 @@ class MailController extends Controller
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
         $mail->Host = env('MAIL_HOST');
-        $mail->SMTPAuth = true;
-        $mail->Username = env('MAIL_USERNAME');
-        $mail->Password = env('MAIL_PASSWORD');
+        $mail->SMTPAuth = false;
+        //$mail->Username = env('MAIL_USERNAME');
+        //$mail->Password = env('MAIL_PASSWORD');
         //$mail->SMTPSecure = env('MAIL_ENCRYPTION');
         $mail->Port = env('MAIL_PORT');
         $mail->CharSet = 'UTF-8';

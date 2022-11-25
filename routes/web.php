@@ -23,7 +23,6 @@ $router->get('/new-password', 'AuthController@newPassword');
 $router->group(['prefix' => 'api'], function () use ($router) {
     
     $router->post('/register', 'AuthController@register');
-    $router->post('/login', 'AuthController@login');
 
     $router->post('/data', 'DataController@store');
     $router->get('/sensor-settings', 'SensorSettingsController@index');
@@ -37,6 +36,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     
     $router->group(['middleware' => 'auth'], function () use ($router) {
+        $router->post('/login', 'AuthController@login');
         $router->post('/logout', 'AuthController@logout');
         $router->post('/refresh', 'AuthController@refreshToken');        
 

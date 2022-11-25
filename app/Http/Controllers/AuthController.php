@@ -42,10 +42,11 @@ class AuthController extends Controller
             $user->email_verified = true;
 
             if ($user->save()) {
+                $content = 'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash;
+                exec("echo '".$content."' | mutt -s 'К-Телеком верификационное письмо' -e 'my_hdr From: m2m_server@k-telecom.org' -- " . $request->email);
                 $newMail = new MailController();
                 if($newMail->sendMail($request->email,'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'К-Телеком верификационное письмо')==true)
                 {
-                    $content = 'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash;
                     exec("echo '".$content."' | mutt -s 'К-Телеком верификационное письмо' -e 'my_hdr From: m2m_server@k-telecom.org' -- " . $request->email);
                     return $this->login($request);
                 }

@@ -34,9 +34,18 @@ class DataController extends Controller
         if(!$sensor){
             return response()->json(['message' => 'No sensor with this mac']);
         }
+        if(!$sensor_settings){
+            return response()->json(['message' => 'Sesor dont have settings']);
+        }
         $station = Station::find($sensor->station_id);
         $user = User::find($station->user_id);
         $data = Data::where('sensor_id', $sensor['id'])->first();
+        if(!$station){
+            return response()->json(['message' => 'Sesor dont have station']);
+        }
+        if(!$user){
+            return response()->json(['message' => 'Sesor dont have user']);
+        }
         if(!$data){
            $data = new Data(); 
         }

@@ -43,16 +43,8 @@ class AuthController extends Controller
 
             if ($user->save()) {
                 $content = 'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash;
-                exec("echo 'Это тестовое письмо c testserva' | mail -s 'Проверка отправки почты hshshshsh' -r m2m_server@k-telecom.org  kom.alx.frlv@gmail.com");
-                $newMail = new MailController();
-                if($newMail->sendMail($request->email,'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash,'К-Телеком верификационное письмо')==true)
-                {
-                    exec("echo 'Это тестовое письмо c testserva' | mail -s 'Проверка отправки почтыhshshsha]saasg' -r m2m_server@k-telecom.org  kom.alx.frlv@gmail.com");
-                    return $this->login($request);
-                }
-                else{
-                    return response()->json(['Something gone wrong']);
-                }
+                exec("echo 'Подтверждение регистрации' | mail -s '".$content."' -r m2m_server@k-telecom.org ".$request->email);
+                return $this->login($request);
             }
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

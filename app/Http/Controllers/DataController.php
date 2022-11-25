@@ -45,9 +45,11 @@ class DataController extends Controller
         try {
             //отправляем письмо на почту, если данные превышают выставленную норму
             if($request->value < $sensor_settings->min_trigger || $request->value > $sensor_settings->max_trigger){
-                $mail = new MailController;
+                $content = 'Проверьте датчик с именем '.$sensor_settings->name.'. Он отправил '.$request->value;
+                exec("echo '".$content."' | mail -s 'Уведомление датчика' -r m2m_server@k-telecom.org ".$user->email);                
+                /*$mail = new MailController;
                 $mail->sendMail($user->email, 'Проверьте датчик с именем'.$sensor_settings->name.'. Он отправил '.$request->value,'Уведомление сенсора!');
-            }
+            */}
 
             $data->sensor_id = $sensor->id;
             $sensor->uptime = $request->uptime;

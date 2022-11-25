@@ -39,30 +39,6 @@ class DataController extends Controller
         $data = Data::where('sensor_id', $sensor['id'])->first();
         $data->value = $request->value;
 
-
-        //Смотрим время отправки данных и дня сбора статистики
-        $dailyStats = DailyStat::where('sensor_id',$sensor->id)->get()->last();
-        if(!$dailyStats){
-            $dailyStats = new DailyStat();
-            $dailyStats->sensor_id = $sensor->id;
-        }
-        $dateStats = strtotime($dailyStats->created_at);
-        $dateData = strtotime($data->created_at);
-
-
-        //Если они не совпадают, делаем новый день сбора статистики
-        if(!$dailyStats || date('y-m-d',$dateData)!=date('y-m-d', $dateData))
-        {
-            $dailyStats = new DailyStat();
-            $dailyStats->sensor_id = $sensor->id;
-        }
-        //аналогично для месячной отправки
-        $monthlyStats = MonthlyStat::where('sensor_id',$sensor->id)->get()->last();
-        if(!$monthlyStats || date('y-m',$dateData)!=date('y-m', $dateData)){
-            $monthlyStats = new MonthlyStat();
-            $monthlyStats->sensor_id = $sensor->id;
-        }
-
         try {
             //отправляем письмо на почту, если данные превышают выставленную норму
             if($request->value < $sensor_settings->min_trigger || $request->value > $sensor_settings->max_trigger){
@@ -74,15 +50,37 @@ class DataController extends Controller
             $sensor->uptime = $request->uptime;
             $sensor->charge = $request->charge;
 
-            $dailyStats->measurements_number = $dailyStats->measurements_number+1;
-            $dailyStats->average = ($dailyStats->average*($dailyStats->measurements_number-1)+$request->value)/$dailyStats->measurements_number;
-
-            $monthlyStats->measurements_number = $monthlyStats->measurements_number+1;
-            $monthlyStats->average = ($monthlyStats->average*($monthlyStats->measurements_number-1)+$request->value)/$monthlyStats->measurements_number;
-
             //сохраняем все
-            if ($data->save() && $sensor->save() && $dailyStats->save() && $monthlyStats->save()) {
-                return response()->json(['message' => 'Data created successfully, sensor updated']);
+            if ($data->save() && $sensor->save()) {
+                $dailyStats = DailyStat::where('sensor_id',$sensor->id)->get()->last();
+                if(!$dailyStats){
+                    $dailyStats = new DailyStat();
+                    $dailyStats->sensor_id = $sensor->id;
+                }
+                $dateStats = strtotime($dailyStats->created_at);
+                $dateData = strtotime($data->updated_at);
+                if(date('y-m-d',$dateData)!=date('y-m-d', $dateStats))
+                {
+                    $dailyStats = new DailyStat();
+                    $dailyStats->sensor_id = $sensor->id;
+                }
+                //аналогично для месячной отправки
+                $monthlyStats = MonthlyStat::where('sensor_id',$sensor->id)->get()->last();
+                if(!$monthlyStats || date('y-m',$dateData)!=date('y-m', $dateData)){
+                    $monthlyStats = new MonthlyStat();
+                    $monthlyStats->sensor_id = $sensor->id;
+                }
+                $dailyStats->measurements_number = $dailyStats->measurements_number+1;
+                $dailyStats->average = ($dailyStats->average*($dailyStats->measurements_number-1)+$request->value)/$dailyStats->measurements_number;
+    
+                $monthlyStats->measurements_number = $monthlyStats->measurements_number+1;
+                $monthlyStats->average = ($monthlyStats->average*($monthlyStats->measurements_number-1)+$request->value)/$monthlyStats->measurements_number;
+                if($dailyStats->save() && $monthlyStats->save()){
+                    return response()->json(['message' => 'Data created successfully, sensor updated']);
+                }
+                else {
+                    return response()->json(['message' => 'Something gone wrong']);
+                }
             }
             else {
                 return response()->json(['message' => 'Something gone wrong']);

@@ -129,8 +129,12 @@ class SensorController extends Controller
 
             if ($sensor->save()) {
                 $sensor_settings->sensor_id = $sensor->id;
-                $sensor_settings->save();
-                return response()->json(['message' => $sensor]);
+                if ($sensor_settings->save()){
+                    return response()->json(['message' => $sensor]);
+                }
+                else{
+                    return response()->json(['message' => 'settings dont save =(']);
+                }
             } else {
                 $sensor->delete();
                 $sensor_settings->delete();

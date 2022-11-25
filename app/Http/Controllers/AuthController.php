@@ -43,7 +43,7 @@ class AuthController extends Controller
 
             if ($user->save()) {
                 $content = 'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash;
-                exec("echo 'Подтверждение регистрации' | mail -s '".$content."' -r m2m_server@k-telecom.org ".$request->email);
+                exec("echo '".$content."' | mail -s 'Подтверждение регистрации' -r m2m_server@k-telecom.org ".$request->email);
                 return $this->login($request);
             }
         } catch (\Exception $e) {

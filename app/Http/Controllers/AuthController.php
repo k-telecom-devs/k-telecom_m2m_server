@@ -39,6 +39,7 @@ class AuthController extends Controller
             $user->password = app('hash')->make($request->password);
             $user->phone_number = $phone_number;
             $user->user_hash = hash('sha512',$name.$email.$phone_number);
+            $user->email_verified = true;
 
 
             if ($user->save()) {

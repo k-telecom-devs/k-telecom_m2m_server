@@ -36,7 +36,8 @@ class DataController extends Controller
         }
         $station = Station::find($sensor->station_id);
         $user = User::find($station->user_id);
-        $data = new Data();
+        $data = Data::where('sensor_id', $sensor['id'])->first();
+        return response()->json(['message' => $data]);
         $data->value = $request->value;
 
 
@@ -47,29 +48,18 @@ class DataController extends Controller
             $dailyStats->sensor_id = $sensor->id;
         }
         $dateStats = strtotime($dailyStats->created_at);
-        $dateStats = date('y-m-d');
         $dateData = strtotime($data->created_at);
-        $dateData = date('y-m-d');
 
 
         //Если они не совпадают, делаем новый день сбора статистики
-        if($dateData!=$dateStats)
+        if(!$dailyStats || date('y-m-d',$dateData)!=date('y-m-d', $dateData))
         {
             $dailyStats = new DailyStat();
             $dailyStats->sensor_id = $sensor->id;
         }
         //аналогично для месячной отправки
         $monthlyStats = MonthlyStat::where('sensor_id',$sensor->id)->get()->last();
-        if(!$monthlyStats){
-            $monthlyStats = new MonthlyStat();
-            $monthlyStats->sensor_id = $sensor->id;
-        }
-        $dateStats = strtotime($monthlyStats->created_at);
-        $dateStats = date('y-m');
-        $dateData = strtotime($data->created_at);
-        $dateData = date('y-m');
-        if($dateData!=$dateStats)
-        {
+        if(!$monthlyStats || date('y-m',$dateData)!=date('y-m', $dateData)){
             $monthlyStats = new MonthlyStat();
             $monthlyStats->sensor_id = $sensor->id;
         }

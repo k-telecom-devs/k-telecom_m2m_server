@@ -37,6 +37,9 @@ class DataController extends Controller
         $station = Station::find($sensor->station_id);
         $user = User::find($station->user_id);
         $data = Data::where('sensor_id', $sensor['id'])->first();
+        if(!$data){
+           $data = new Data(); 
+        }
         $data->value = $request->value;
 
         try {

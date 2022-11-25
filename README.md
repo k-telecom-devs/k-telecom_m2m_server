@@ -632,7 +632,8 @@ GET /api/daily-stat
         "created_at": "2022-11-23T11:56:48.000000Z",
         "updated_at": "2022-11-23T11:56:56.000000Z",
         "average": 69.5,
-        "measurements_number": 2,            "sensor_id": 1
+        "measurements_number": 2,            
+        "sensor_id": 1
     }
 ]
 ```
@@ -652,7 +653,8 @@ GET /api/monthly-stat
         "created_at": "2022-11-23T11:56:48.000000Z",
         "updated_at": "2022-11-23T11:56:56.000000Z",
         "average": 69.5,
-        "measurements_number": 2,            "sensor_id": 1
+        "measurements_number": 2,            
+        "sensor_id": 1
     }
 ]
 ```

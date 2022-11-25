@@ -19,7 +19,7 @@ class MailController extends Controller
         $mail->SMTPAuth = true;
         $mail->Username = env('MAIL_USERNAME');
         $mail->Password = env('MAIL_PASSWORD');
-        $mail->SMTPSecure = env('MAIL_ENCRYPTION');
+        //$mail->SMTPSecure = env('MAIL_ENCRYPTION');
         $mail->Port = env('MAIL_PORT');
         $mail->CharSet = 'UTF-8';
         $mail->setFrom('m2m_server@k-telecom.org', 'K-Telecom');

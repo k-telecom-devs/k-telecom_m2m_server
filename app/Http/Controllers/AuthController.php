@@ -161,13 +161,18 @@ class AuthController extends Controller
             return response()->json(['message' => "Can't find user with this email"]);
         }
 
-        $content = 'Перейдите по этой ссылке, если хотите поменять пароль.<br>'.$_SERVER['SERVER_NAME'].'/new-password?fbcc689837324a00d4aa9365a7458715='.$user['user_hash'];
-        exec("echo '".$content."' | mail -s 'Изменение пароля' -r m2m_server@k-telecom.org ".$user['email']);
+        if($user->save())
+        {
+            $content = "Перейдите по этой ссылке, если хотите поменять пароль. "
+                .$_SERVER['SERVER_NAME']
+                ."/new-password?fbcc689837324a00d4aa9365a7458715="
+                .$user['user_hash'];
+            exec("echo '".$content."' | mail -s 'Изменение пароля' -r m2m_server@k-telecom.org ".$user['email']);
 
-        if($user->save()) {
             return response()->json(['message' => 'Mail send']);
         }
-        else{
+        else
+        {
             return response()->json(['message' => 'Something gone wrong']);
         }
     }
@@ -177,15 +182,16 @@ class AuthController extends Controller
         $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715)->first();
         $defaultPassword = rand(1000000000,9999999999);
 
-        $content = 'Ваш новый пароль.<br>'.$defaultPassword.'<br> В целях безопасности, мы рекомендуем изменить его как можно быстрее';
-        exec("echo '".$content."' | mail -s 'Изменение пароля' -r m2m_server@k-telecom.org ".$user['email']);
-
         $user->password = app('hash')->make($defaultPassword);
         $user->password_reset_hash = null;
-        if($user->save()){
-        return response()->json(['message' => $defaultPassword]);
-    }
-        else{
+        if($user->save())
+        {
+            $content = "Ваш новый пароль: ".$defaultPassword."<br>В целях безопасности, мы рекомендуем изменить его как можно быстрее";
+            exec("echo '".$content."' | mail -s 'Изменение пароля' -r m2m_server@k-telecom.org ".$user['email']);
+            return response()->json(['message' => $defaultPassword]);
+        }
+        else
+        {
             return response()->json(['message' => "Something gone wrong"]);
         }
     }
@@ -206,11 +212,10 @@ class AuthController extends Controller
             else{
                 return response()->json(['message' => "Can't find user"]);
             }
-    }
-    catch (\Exception $e) {
-
-        return response()->json(['message' => $e->getMessage()]);
-    }
+        }
+        catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
     }
 }
 

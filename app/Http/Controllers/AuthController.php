@@ -39,7 +39,7 @@ class AuthController extends Controller
             $user->password = app('hash')->make($request->password);
             $user->phone_number = $phone_number;
             $user->user_hash = hash('sha512',$name.$email.$phone_number);
-            $user->email_verified = true;
+            $user->email_verified = false;
 
             if ($user->save()) {
                 $content = 'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash;

@@ -21,8 +21,9 @@ $router->get('/confirm', 'AuthController@confirm');
 $router->get('/new-password', 'AuthController@newPassword');
 
 $router->group(['prefix' => 'api'], function () use ($router) {
-    
+
     $router->post('/register', 'AuthController@register');
+    $router->post('/login', 'AuthController@login');
 
     $router->post('/data', 'DataController@store');
     $router->get('/sensor-settings', 'SensorSettingsController@index');
@@ -34,11 +35,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         return env('APP_VERSION');
     });
 
-    
     $router->group(['middleware' => 'auth'], function () use ($router) {
-        $router->post('/login', 'AuthController@login');
         $router->post('/logout', 'AuthController@logout');
-        $router->post('/refresh', 'AuthController@refreshToken');        
+        $router->post('/refresh', 'AuthController@refreshToken');
 
 
         $router->group(['middleware' => 'verified'], function () use ($router) {
@@ -59,7 +58,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             $router->post('/station-settings', 'StationSettingsController@edit');
 
             $router->post('/version', 'VersionController@create');
-            $router->get('/version', 'VersionController@index');      
+            $router->get('/version', 'VersionController@index');
 
             $router->get('/sensor', 'SensorController@index');
             $router->post('/sensor', 'SensorController@create');

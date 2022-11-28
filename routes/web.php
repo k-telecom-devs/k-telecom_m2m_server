@@ -1,6 +1,4 @@
 <?php
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*

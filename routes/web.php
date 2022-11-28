@@ -1,4 +1,5 @@
 <?php
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
@@ -19,6 +20,13 @@ $router->get('/', function () use ($router) {
 
 $router->get('/confirm', 'AuthController@confirm');
 $router->get('/new-password', 'AuthController@newPassword');
+
+$router->get('/get-app', function () use ($router) {
+    $type = 'application/vnd.android.package-archive';
+    $headers = ['Content-Type' => $type];
+    $path = storage_path("app/k-telecom-m2m.apk");
+    return response()->download($path, 'k-telecom-m2m.apk', $headers);
+});
 
 $router->group(['prefix' => 'api'], function () use ($router) {
 

@@ -205,9 +205,10 @@ class AuthController extends Controller
             $content = "Ваш новый пароль: "
             .$defaultPassword
             ."<br>В целях безопасности, мы рекомендуем изменить его как можно быстрее";
-            MailController::sendMail($user->email, $content ,'Уведомление сенсора!'); 
-            //return view('passwordMail', compact($defaultPassword));
-            return response()->json(['message' => $defaultPassword]);
+            MailController::sendMail($user->email, $content ,'Восстановление пароля!'); 
+            //return response()->view('passwordMail', compact($defaultPassword));
+            return response('<center style="font-size: 20pt; margin-top: 5%;"><h3> Ваш новый пароль
+                            <p><h1>'.$defaultPassword.'<h3>Мы рекомендуем как можно скорее изменить его');
         }
         else
         {
@@ -215,14 +216,14 @@ class AuthController extends Controller
         }
     }
 
-    public function confirm(Request $request): JsonResponse
+    public function confirm(Request $request)//: JsonResponse
     {
         try{
             $user = User::where('user_hash', $request->fbcc689837324a00d4aa9365a7458715)->first();
             if($user){
                 $user->email_verified = true;
                 if ($user->save()){
-                    return response()->json(['message' => 'Successfully confirm']);
+                    return response('<center style="font-size: 20pt; margin-top: 5%;"><h3> Вы успешно верифицированы!');
                 }
                 else{
                     return response()->json(['message' => 'Somthing gone wrong']);

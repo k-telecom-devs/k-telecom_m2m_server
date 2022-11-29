@@ -9,6 +9,6 @@
         <h3> Ваш новый пароль
     </p>
     <p>
-        <h1> {{$defaultPassword}}
+        <h1> {{ $defaultPassword }}
     </p>
 </body>

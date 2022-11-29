@@ -80,6 +80,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             $router->get('/daily-stat', 'StatController@dailyStat');
             $router->get('/monthly-stat', 'StatController@MonthlyStat');
+
+            $router->post('/group-metrics', 'MetricsController@store');
+            $router->get('/group-metrics', 'MetricsController@index');
         });
     });
 });

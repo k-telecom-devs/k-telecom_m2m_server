@@ -116,7 +116,15 @@ class AuthController extends Controller
             $user->auto_pay = $request->auto_pay;
         }
         if (!empty($request->email)){
+            $user->email_verified = false;
             $user->email = $request->email;
+            $content = 'Перейдите по ссылке чтобы верифицировать ваш аккаунт <br>'
+            .$_SERVER['SERVER_NAME']
+            .':'
+            .$_SERVER['SERVER_PORT']
+            .'/confirm?fbcc689837324a00d4aa9365a7458715='
+            .$user->user_hash;
+            MailController::sendMail($request->email, $content ,'Верификационное письмо');
         }
         if (!empty($request->password)){
             $user->password = app('hash')->make($request->password);
@@ -197,7 +205,8 @@ class AuthController extends Controller
             $content = "Ваш новый пароль: "
             .$defaultPassword
             ."<br>В целях безопасности, мы рекомендуем изменить его как можно быстрее";
-            MailController::sendMail($user->email, $content ,'Уведомление сенсора!');
+            MailController::sendMail($user->email, $content ,'Уведомление сенсора!'); 
+            //return view('passwordMail', compact($defaultPassword));
             return response()->json(['message' => $defaultPassword]);
         }
         else

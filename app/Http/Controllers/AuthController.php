@@ -42,8 +42,14 @@ class AuthController extends Controller
             $user->email_verified = false;
 
             if ($user->save()) {
-                $content = 'Перейдите по ссылке '.$_SERVER['SERVER_NAME'].'/confirm?fbcc689837324a00d4aa9365a7458715='.$user->user_hash;
-                exec("echo '".$content."' | mail -s 'Подтверждение регистрации' -r m2m_server@k-telecom.org ".$request->email);
+                $content = 'Перейдите по ссылке чтобы верифицировать ваш аккаунт <br>'
+                .$_SERVER['SERVER_NAME']
+                .':'
+                .$_SERVER['SERVER_PORT']
+                .'/confirm?fbcc689837324a00d4aa9365a7458715='
+                .$user->user_hash;
+                MailController::sendMail($user->email, $content ,'Верификационное письмо');
+                //exec("echo '".$content."' | mail -s 'Подтверждение регистрации' -r m2m_server@k-telecom.org ".$request->email);
                 return $this->login($request);
             }
         } catch (\Exception $e) {
@@ -163,11 +169,13 @@ class AuthController extends Controller
 
         if($user->save())
         {
-            $content = "Перейдите по этой ссылке, если хотите поменять пароль. "
+            $content = "Перейдите по этой ссылке, если хотите восстановить пароль.<br>"
                 .$_SERVER['SERVER_NAME']
+                .':'
+                .$_SERVER['SERVER_PORT']
                 ."/new-password?fbcc689837324a00d4aa9365a7458715="
                 .$user['user_hash'];
-            exec("echo '".$content."' | mail -s 'Изменение пароля' -r m2m_server@k-telecom.org ".$user['email']);
+                MailController::sendMail($user->email, $content ,'Восстановление пароля!');
 
             return response()->json(['message' => 'Mail send']);
         }
@@ -186,8 +194,10 @@ class AuthController extends Controller
         $user->password_reset_hash = null;
         if($user->save())
         {
-            $content = "Ваш новый пароль: ".$defaultPassword."<br>В целях безопасности, мы рекомендуем изменить его как можно быстрее";
-            exec("echo '".$content."' | mail -s 'Изменение пароля' -r m2m_server@k-telecom.org ".$user['email']);
+            $content = "Ваш новый пароль: "
+            .$defaultPassword
+            ."<br>В целях безопасности, мы рекомендуем изменить его как можно быстрее";
+            MailController::sendMail($user->email, $content ,'Уведомление сенсора!');
             return response()->json(['message' => $defaultPassword]);
         }
         else

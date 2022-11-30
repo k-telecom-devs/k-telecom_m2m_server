@@ -56,9 +56,18 @@ class DataController extends Controller
 
         try {
             //отправляем письмо на почту, если данные превышают выставленную норму
-            if ($request->value < $sensor_settings->min_trigger || $request->value > $sensor_settings->max_trigger) {
+            $sensorDataAlert = $request->value < $sensor_settings->min_trigger || $request->value > $sensor_settings->max_trigger;
+
+            if ($sensorDataAlert && !$sensor_settings->alert) {
                 $content = 'Проверьте датчик с именем ' . $sensor_settings->name . '. Он отправил ' . $request->value;
                 (new MailController)->sendMail($user->email, $content, 'Уведомление сенсора!');
+                $sensor_settings->alert = true;
+                $sensor_settings->save();
+            }
+
+            if (!$sensorDataAlert && $sensor_settings->alert) {
+                $sensor_settings->alert = false;
+                $sensor_settings->save();
             }
 
             //сохраняем все

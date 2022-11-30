@@ -45,7 +45,7 @@ class AuthController extends Controller
             if ($user->save()) {
                 $link = $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . '/confirm?fbcc689837324a00d4aa9365a7458715=' . $user->user_hash;
                 $content = 'Перейдите по ссылке чтобы верифицировать ваш аккаунт <br>'
-                    .'<a href=".'.$link.'.">'.'Подтвердить почту</a>';
+                    .'<a href=".'.$link.'.">'.'Подтвердить почту: </a>'.$link;
 
                 (new MailController())->sendMail($user->email, $content, 'Верификационное письмо');
 

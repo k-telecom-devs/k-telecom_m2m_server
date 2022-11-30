@@ -34,6 +34,7 @@ class SensorController extends Controller
 
         if ($sensor) {
             $station = Station::where('id', $sensor->station_id)->first();
+
             if ($user['id'] == $station->user_id) {
                 $sensor_settings = SensorSettings::where('sensor_id', $sensor->id)->first();
                 $sensor_settings->delete();
@@ -129,10 +130,9 @@ class SensorController extends Controller
 
             if ($sensor->save()) {
                 $sensor_settings->sensor_id = $sensor->id;
-                if ($sensor_settings->save()){
+                if ($sensor_settings->save()) {
                     return response()->json(['message' => $sensor]);
-                }
-                else{
+                } else {
                     return response()->json(['message' => 'settings dont save =(']);
                 }
             } else {

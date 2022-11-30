@@ -20,22 +20,25 @@ class MetricsController extends Controller
     public function store(Request $request): JsonResponse
     {
         $user = auth()->user();
-        if(! Group::find($request->group_id)){
+
+        if (!Group::find($request->group_id)) {
             return response()->json(['message' => "Can't find group"]);
         }
-        if(!$user){
+
+        if (!$user) {
             return response()->json(['message' => "Can't find user"]);
         }
+
         try {
             $metrics = new Metrics;
             $metrics->user_id = $user['id'];
             $metrics->group_id = $request->group_id;
-            if ($metrics->save()){
+
+            if ($metrics->save())
                 return response()->json(['message' => 'Metrics saved']);
-            }
-            else{
+            else
                 return response()->json(['message' => 'Smth gone wrong']);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }

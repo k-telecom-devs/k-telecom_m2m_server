@@ -27,17 +27,13 @@ class MailController extends Controller
         $mail->isHTML(true);
         $mail->Subject = 'K-telecom message';
 
-        $mail->Body = $code." ". $message;
-        try{
-            if ($mail->send()){
-            return response()->json(['message' => 'Mail send', 'code'=> hash('md5', $code)]);
-            }
-            else{
+        $mail->Body = $code . " " . $message;
+        try {
+            if ($mail->send())
+                return response()->json(['message' => 'Mail send', 'code' => hash('md5', $code)]);
+            else
                 return response()->json(['message' => 'Something gone wrong']);
-            }
-        }
-
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
 
@@ -63,16 +59,12 @@ class MailController extends Controller
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $content;
-        try{
-        if ($mail->send()){
-            return $mail->$content;
-        }
-        else{
-            return false;
-        }
-        }
-
-        catch (\Exception $e) {
+        try {
+            if ($mail->send())
+                return $mail->$content;
+            else
+                return false;
+        } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
 

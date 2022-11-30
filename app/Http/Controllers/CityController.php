@@ -30,8 +30,7 @@ class CityController extends Controller
 
             if ($city->save()) {
                 return response()->json(['message' => 'City created successfully']);
-            }
-            else {
+            } else {
                 return response()->json(['message' => 'Something gone wrong']);
             }
         } catch (\Exception $e) {

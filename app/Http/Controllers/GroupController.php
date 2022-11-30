@@ -21,11 +21,10 @@ class GroupController extends Controller
             $group->group_name = $request->group_name;
 
             $group->user_id = $user['id'];
-            
+
             if ($group->save()) {
                 return response()->json(['message' => 'Group created successfully']);
-            }
-            else {
+            } else {
                 return response()->json(['message' => 'Something gone wrong']);
             }
         } catch (\Exception $e) {

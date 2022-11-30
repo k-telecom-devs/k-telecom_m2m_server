@@ -65,53 +65,49 @@ class SensorController extends Controller
             'min_trigger' => 'required',
             'max_trigger' => 'required',
         ]);
+
         $user = auth()->user();
         $sensor = new Sensor();
         $sensor_settings = new SensorSettings();
-        $version = Version::find($request->version_id);
+
         $station = Station::find($request->station_id);
-
-        if (!$station) {
+        if (!$station)
             return response()->json(['message' => 'No station with this id']);
-        }
 
-        if (!$version) {
+        $version = Version::find($request->version_id);
+        if (!$version)
             return response()->json(['message' => 'No version with this id']);
-        }
 
         $version_device_type = DeviceType::find($version->device_type_id);
+
         $real_device_type = DeviceType::find($request->device_type_id);
-        if (!$real_device_type) {
+        if (!$real_device_type)
             return response()->json(['message' => 'No device type with this id']);
-        }
 
         $created_sensor = Sensor::where('mac', $request->mac)->get();
 
-        if (!empty($created_sensor[0])) {
+        if (!empty($created_sensor[0]))
             return response()->json(['message' => 'This sensor alredy exists ' . $created_sensor]);
-        }
 
         $created_group = Group::find($request->group_id);
-        if (!$created_group) {
+        if (!$created_group)
             return response()->json(['message' => 'No group with this id']);
-        }
 
         $created_subgroup = Subgroup::find($request->subgroup_id);
-        if (!$created_subgroup) {
+        if (!$created_subgroup)
             return response()->json(['message' => 'No subgroup with this id']);
-        }
-        if ($created_subgroup->group_id != $request->group_id) {
+
+        if ($created_subgroup->group_id != $request->group_id)
             return response()->json(['message' => 'Subgroup does not belong to the group']);
-        }
-        if ($station->user_id != $user['id']) {
+
+        if ($station->user_id != $user['id'])
             return response()->json(['message' => 'Station does not belong to this user']);
-        }
+
         try {
-            if ($version->device_type_id == $request->device_type_id) {
+            if ($version->device_type_id == $request->device_type_id)
                 $sensor_settings->version_id = $request->version_id;
-            } else {
+            else
                 return response()->json(['message' => 'Wrong sensor type. this version only for ' . $version_device_type->device_type . ". Your device is " . $real_device_type->device_type]);
-            }
 
             $sensor->station_id = $request->station_id;
             $sensor->device_type_id = $request->device_type_id;
@@ -130,11 +126,10 @@ class SensorController extends Controller
 
             if ($sensor->save()) {
                 $sensor_settings->sensor_id = $sensor->id;
-                if ($sensor_settings->save()) {
+                if ($sensor_settings->save())
                     return response()->json(['message' => $sensor]);
-                } else {
+                else
                     return response()->json(['message' => 'settings dont save =(']);
-                }
             } else {
                 $sensor->delete();
                 $sensor_settings->delete();

@@ -73,7 +73,7 @@ class DataController extends Controller
                     $content = $content
                         . '. Значение преодолело максимальный порог '
                         . $sensor_settings->max_trigger
-                        . ' и составляет'
+                        . ' и составляет '
                         . $request->value;
 
                 (new MailController)->sendMail($user->email, $content, 'Уведомление сенсора!');

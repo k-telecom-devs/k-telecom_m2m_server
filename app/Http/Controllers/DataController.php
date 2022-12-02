@@ -132,7 +132,7 @@ class DataController extends Controller
 
     public function lost_data(): JsonResponse
     {
-        $sensors = Sensor::with(['settings'])->where(['lost', false])->get()->all();
+        $sensors = Sensor::with(['settings'])->where(['lost', 0])->get()->all();
 
         $data = [];
 

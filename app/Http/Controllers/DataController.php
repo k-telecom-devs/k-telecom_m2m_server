@@ -63,7 +63,7 @@ class DataController extends Controller
                 $content = 'Проверьте датчик с именем '
                     . $sensor_settings->name;
 
-                if ($request->value < $sensor_settings->min_trigger )
+                if ($request->value < $sensor_settings->min_trigger)
                     $content = $content
                         . '. Значение преодолело минимальный порог '
                         . $sensor_settings->min_trigger
@@ -85,6 +85,8 @@ class DataController extends Controller
                 $sensor_settings->alert = false;
                 $sensor_settings->save();
             }
+
+            $sensor->lost = false;
 
             //сохраняем все
             if ($data->save() && $sensor->save()) {
@@ -130,21 +132,24 @@ class DataController extends Controller
 
     public function lost_data(): JsonResponse
     {
-        $sensors = Sensor::with(['settings'])->get()->all();
+        $sensors = Sensor::with(['settings'])->where(['lost', false])->get()->all();
+
         $data = [];
 
-        foreach ($sensors as $sensor)
-        {
+        foreach ($sensors as $sensor) {
             try {
                 $u = new \DateTime($sensor['updated_at']);
                 $s = $sensor['settings']['sleep'] * 2;
                 $a = $u->modify("+3 minutes")->modify("+$s seconds");
                 $name = $sensor['settings']['name'];
 
-                if(new \DateTime() > $a)
-                {
+                if (new \DateTime() > $a) {
                     $st = Station::find($sensor['station_id']);
                     $us = User::find($st['user_id']);
+
+                    $sn = Sensor::find($sensor['id']);
+                    $sn->lost = true;
+                    $sn->save();
 
                     $email = $us['email'];
 

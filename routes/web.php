@@ -37,6 +37,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/mail', 'MailController@sendCode');
     $router->post('/password-reset', 'AuthController@generateResetHash');
 
+    $router->post('/lost_data', 'DataController@lost_data');
+
     $router->get('/api-version', function () use ($router) {
         return env('APP_VERSION');
     });

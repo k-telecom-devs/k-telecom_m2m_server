@@ -127,4 +127,41 @@ class DataController extends Controller
             return response()->json(['message' => $e->getMessage()]);
         }
     }
+
+    public function lost_data(): JsonResponse
+    {
+        $sensors = Sensor::with(['settings'])->get()->all();
+        $data = [];
+
+        foreach ($sensors as $sensor)
+        {
+            try {
+                $u = new \DateTime($sensor['updated_at']);
+                $s = $sensor['settings']['sleep'] * 2;
+                $a = $u->modify("+3 minutes")->modify("+$s seconds");
+                $name = $sensor['settings']['name'];
+
+                if(new \DateTime() > $a)
+                {
+                    $st = Station::find($sensor['station_id']);
+                    $us = User::find($st['user_id']);
+
+                    $email = $us['email'];
+
+                    $mailer = new MailController();
+                    $content = "Ваш датчик с именем $name не присылает данные, проверьте подключение датчика к сети.";
+
+                    try {
+                        $mailer->sendMail($email, $content, 'Проверьте датчик!');
+                        array_push($data, $email);
+                    } catch (\Exception $e) {
+                        return response()->json(['error' => $e->getMessage()]);
+                    }
+                }
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()]);
+            }
+        }
+        return response()->json(['send_to' => $data]);
+    }
 }

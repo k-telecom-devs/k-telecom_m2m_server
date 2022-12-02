@@ -140,7 +140,7 @@ class DataController extends Controller
             try {
                 $u = new \DateTime($sensor['updated_at']);
                 $s = $sensor['settings']['sleep'] * 2;
-                $a = $u->modify("+3 minutes")->modify("+$s seconds");
+                $a = $u->modify("+1 minutes")->modify("+$s seconds");
                 $name = $sensor['settings']['name'];
 
                 if (new \DateTime() > $a) {

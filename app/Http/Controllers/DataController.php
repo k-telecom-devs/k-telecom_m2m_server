@@ -160,11 +160,10 @@ class DataController extends Controller
 
                     $email = $us['email'];
 
-                    $mailer = new MailController();
                     $content = "Ваш датчик с именем $name не присылает данные, проверьте подключение датчика к сети.";
 
                     try {
-                        $mailer->sendMail($email, $content, 'Проверьте датчик!');
+                        (new MailController)->sendMail($email, $content, 'Проверьте датчик!');
                         array_push($data, $email);
                     } catch (\Exception $e) {
                         return response()->json(['error' => $e->getMessage()]);

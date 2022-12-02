@@ -78,15 +78,13 @@ class DataController extends Controller
 
                 (new MailController)->sendMail($user->email, $content, 'Уведомление сенсора!');
                 $sensor_settings->alert = true;
-                $sensor_settings->save();
             }
 
             if (!$sensorDataAlert && $sensor_settings->alert) {
                 $sensor_settings->alert = false;
-                $sensor_settings->save();
             }
 
-            $sensor_name = $sensor['name'];
+            $sensor_name = $sensor_settings['name'];
 
             $lost_content = "Датчик с именем $sensor_name снова активен!";
 
@@ -96,7 +94,7 @@ class DataController extends Controller
             $sensor->lost = false;
 
             //сохраняем все
-            if ($data->save() && $sensor->save()) {
+            if ($data->save() && $sensor->save() && $sensor_settings->save()) {
                 $dailyStats = DailyStat::where('sensor_id', $sensor->id)->get()->last();
 
                 if (!$dailyStats) {

@@ -86,6 +86,13 @@ class DataController extends Controller
                 $sensor_settings->save();
             }
 
+            $sensor_name = $sensor['name'];
+
+            $lost_content = "Датчик с именем $sensor_name снова активен!";
+
+            if ($sensor->lost)
+                (new MailController)->sendMail($user->email, $lost_content, 'Уведомление сенсора!');
+
             $sensor->lost = false;
 
             //сохраняем все

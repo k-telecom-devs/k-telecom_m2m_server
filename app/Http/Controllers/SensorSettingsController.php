@@ -37,7 +37,6 @@ class SensorSettingsController extends Controller
             'subgroup_id' => 'required',
             'min_trigger' => 'required',
             'max_trigger' => 'required',
-
         ]);
 
         try {

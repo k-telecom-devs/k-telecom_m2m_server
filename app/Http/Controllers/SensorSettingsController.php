@@ -37,6 +37,7 @@ class SensorSettingsController extends Controller
             'subgroup_id' => 'required',
             'min_trigger' => 'required',
             'max_trigger' => 'required',
+	    'active' => 'required',
         ]);
 
         try {
@@ -87,7 +88,7 @@ class SensorSettingsController extends Controller
             $sensor_settings->subgroup_id = $request->subgroup_id;
             $sensor_settings->min_trigger = $request->min_trigger;
             $sensor_settings->max_trigger = $request->max_trigger;
-
+	    $sensor->active =  $request->active;
             $sensor->station_id = $request->station_id;
 
             if ($sensor_settings->save() && $sensor->save())

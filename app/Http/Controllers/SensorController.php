@@ -141,4 +141,15 @@ class SensorController extends Controller
             return response()->json(['exception' => $e->getMessage()]);
         }
     }
+
+    public function generateID(Request $request) : JsonResponse
+    {
+	$this->validate($request, [
+	    'mac' => 'required',
+	]);
+
+	$id = md5($request->mac . time());
+
+	return response()->json(['id' => $id]);
+    }
 }

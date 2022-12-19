@@ -43,12 +43,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         return env('APP_VERSION');
     });
 
+    $router->post('/give-me-name', 'SensorController@generateID');
+
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('/logout', 'AuthController@logout');
         $router->post('/refresh', 'AuthController@refreshToken');
 
 
         $router->group(['middleware' => 'verified'], function () use ($router) {
+
+	    
 
             $router->post('/profile-change', 'AuthController@profile_change');
             $router->get('/profile-change', 'AuthController@get_profile');

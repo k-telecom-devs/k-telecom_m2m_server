@@ -48,6 +48,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('/logout', 'AuthController@logout');
         $router->post('/refresh', 'AuthController@refreshToken');
+        $router->post('/deletemyself', 'AuthController@delete');
 
 
         $router->group(['middleware' => 'verified'], function () use ($router) {

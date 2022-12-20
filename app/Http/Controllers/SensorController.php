@@ -104,10 +104,14 @@ class SensorController extends Controller
             return response()->json(['message' => 'Station does not belong to this user']);
 
         try {
+
+            $sensor_settings->version_id = $request->version_id;
+            /*
             if ($version->device_type_id == $request->device_type_id)
                 $sensor_settings->version_id = $request->version_id;
             else
                 return response()->json(['message' => 'Wrong sensor type. this version only for ' . $version_device_type->device_type . ". Your device is " . $real_device_type->device_type]);
+            */
 
             $sensor->station_id = $request->station_id;
             $sensor->device_type_id = $request->device_type_id;

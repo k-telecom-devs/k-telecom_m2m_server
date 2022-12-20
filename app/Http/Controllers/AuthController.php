@@ -227,7 +227,20 @@ class AuthController extends Controller
         }
     }
 
-    
+    public function delete(Request $request)
+    {
+        $user = auth()->user();
+
+        try
+        {
+            $user = User::find($user['id']);
+            $user->delete();
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+
+        return response()->json(['message' => 'deleted.']);
+    }
 }
 
 

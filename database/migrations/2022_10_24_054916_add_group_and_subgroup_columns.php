@@ -18,10 +18,10 @@ class AddGroupAndSubgroupColumns extends Migration
             $table->BigInteger('min_trigger')->default(-100);
             $table->BigInteger('max_trigger')->default(100);
 
-            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('group_id')->nullable();
             $table->foreign('group_id')->references('id')->on('group');
 
-            $table->unsignedBigInteger('subgroup_id');
+            $table->unsignedBigInteger('subgroup_id')->nullable();
             $table->foreign('subgroup_id')->references('id')->on('subgroup');
         });
     }

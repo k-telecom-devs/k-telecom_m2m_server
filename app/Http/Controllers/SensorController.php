@@ -60,6 +60,8 @@ class SensorController extends Controller
             'notification_start_at' => 'required',
             'notification_end_at' => 'required',
             'sleep' => 'required',
+            'group_id' => 'required',
+            'subgroup_id' => 'required',
             'min_trigger' => 'required',
             'max_trigger' => 'required',
         ]);
@@ -86,8 +88,7 @@ class SensorController extends Controller
 
         if (!empty($created_sensor[0]))
             return response()->json(['message' => 'This sensor alredy exists ' . $created_sensor]);
-        
-        /*
+
         $created_group = Group::find($request->group_id);
         if (!$created_group)
             return response()->json(['message' => 'No group with this id']);
@@ -95,8 +96,7 @@ class SensorController extends Controller
         $created_subgroup = Subgroup::find($request->subgroup_id);
         if (!$created_subgroup)
             return response()->json(['message' => 'No subgroup with this id']);
-        */
-        
+
         if ($created_subgroup->group_id != $request->group_id)
             return response()->json(['message' => 'Subgroup does not belong to the group']);
 

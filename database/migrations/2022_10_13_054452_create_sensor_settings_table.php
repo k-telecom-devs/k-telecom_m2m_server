@@ -30,7 +30,6 @@ class CreateSensorSettingsTable extends Migration
 
             $table->unsignedBigInteger('station_id');
             $table->foreign('station_id')->references('id')->on('stations');
-
         });
     }
 
